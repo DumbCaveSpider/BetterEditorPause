@@ -18,6 +18,18 @@
 		"editor",
 		"interface"
 	],
+	"dependencies": [
+		{
+			"id": "geode.node-ids",
+			"version": "*",
+			"importance": "required"
+		},
+		{
+			"id": "alphalaneous.happy_textures",
+			"version": "*",
+			"importance": "required"
+		}
+	],
 	"settings": {
 		"move-toggles":{
 			"name": "Move Editor Pause Settings",
