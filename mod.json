@@ -9,6 +9,32 @@
 	"id": "arcticwoof.bettereditorpause",
 	"name": "BetterEditorPause",
 	"version": "v1.0.0",
-	"developer": "ArcticWoof",
-	"description": ""
+	"developers": [
+		"ArcticWoof",
+		"Cheeseworks"
+	],
+	"description": "Organizes editor pause menu's tools",
+	"tags": [
+		"editor",
+		"interface"
+	],
+	"settings": {
+		"move-toggles":{
+			"name": "Move Editor Pause Settings",
+			"description": "Move the editor pause menu's toggle settings to an organized popup.",
+			"type": "bool",
+			"default": true
+		},
+		"move-tools":{
+			"name": "Move Editor Pause Actions",
+			"description": "Move the editor pause menu's action buttons to an organized popup.",
+			"type": "bool",
+			"default": true
+		}
+	},
+	"links": {
+		"community": "https://discord.gg/2jPCtJhHNp",
+		"homepage": "https://www.arcticwoof.com.au/",
+		"source": "https://github.com/DumbCaveSpider/BetterEditorPause"
+	}
 }
