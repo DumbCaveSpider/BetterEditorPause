@@ -18,14 +18,14 @@
 		"editor",
 		"interface"
 	],
+	"resources": {
+		"sprites": [
+			"resources/*.png"
+		]
+	},
 	"dependencies": [
 		{
 			"id": "geode.node-ids",
-			"version": "*",
-			"importance": "required"
-		},
-		{
-			"id": "alphalaneous.happy_textures",
 			"version": "*",
 			"importance": "required"
 		}
