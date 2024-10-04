@@ -19,18 +19,35 @@ class $modify(EditorPause, EditorPauseLayer)
 
 			actionsMenu->removeMeAndCleanup();
 			smallActionsMenu->removeMeAndCleanup();
+			togglesMenu->removeMeAndCleanup();
 
-			togglesMenu->removeAllChildrenWithCleanup(true);
+			// new options menu
+			auto newTogglesMenu = CCMenu::create();
+			newTogglesMenu->setID("options-menu"_spr);
+			newTogglesMenu->ignoreAnchorPointForPosition(false);
+			newTogglesMenu->setScaledContentSize({185.f, 250.f});
+			newTogglesMenu->setPosition({115.f, 135.f});
 
-			auto newTogglesBtnSprite = CCSprite::createWithSpriteFrameName("GJ_plainBtn_001.png");
-			newTogglesBtnSprite->setScale(0.875);
+			this->addChild(newTogglesMenu);
 
-			auto newTogglesBtn = CCMenuItemSpriteExtra::create(
-				newTogglesBtnSprite,
+			// new options menu
+			auto newActionsMenu = CCMenu::create();
+			newActionsMenu->setID("all-actions-menu"_spr);
+			newActionsMenu->ignoreAnchorPointForPosition(false);
+			newActionsMenu->setScaledContentSize({185.f, 250.f});
+			newActionsMenu->setPosition({this->getContentWidth() - 115.f, 135.f});
+
+			this->addChild(newActionsMenu);
+
+			auto toggle_PreviewModeSprite = CCSprite::createWithSpriteFrameName("GJ_plainBtn_001.png");
+			toggle_PreviewModeSprite->setScale(0.875);
+
+			auto toggle_PreviewMode = CCMenuItemSpriteExtra::create(
+				toggle_PreviewModeSprite,
 				this,
 				menu_selector(EditorPause::onNewToggles));
 
-			togglesMenu->addChild(newTogglesBtn);
+			newTogglesMenu->addChild(toggle_PreviewMode);
 
 			return true;
 		}
