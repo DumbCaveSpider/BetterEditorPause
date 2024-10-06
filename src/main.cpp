@@ -1,3 +1,4 @@
+#include "util/EditorAction.hpp"
 #include "popups/CustomPopupLayer.hpp"
 
 #include <Geode/Geode.hpp>
@@ -7,6 +8,8 @@
 #include <Geode/binding/EditorPauseLayer.hpp>
 
 using namespace geode::prelude;
+
+auto getThisMod = geode::getMod();
 
 class $modify(EditorPause, EditorPauseLayer)
 {
@@ -61,8 +64,6 @@ class $modify(EditorPause, EditorPauseLayer)
 			infoMenuSprite->setOpacity(150);
 			infoMenuSprite->setColor(ccColor3B(0, 0, 0));
 
-
-
 			// ACTION TAB //////////////////////////////////////////////////////////////////////////////////////
 
 			// Action Title
@@ -70,7 +71,7 @@ class $modify(EditorPause, EditorPauseLayer)
 			ActionTitle->setScale(0.8);
 			ActionTitle->setPosition({newActionsMenu->getContentWidth() / 2.f, newActionsMenu->getContentHeight() - 15.f});
 			ActionTitle->ignoreAnchorPointForPosition(false);
-			
+
 			// Quick Action Title
 			auto QuickActionTitle = CCLabelBMFont::create("Quick Actions", "goldFont.fnt");
 			QuickActionTitle->setScale(0.65);
@@ -88,7 +89,8 @@ class $modify(EditorPause, EditorPauseLayer)
 				BuildHelper_ButtonSprite,
 				this,
 				menu_selector(EditorPause::onBuildHelper)); // Change this to function
-			
+			BuildHelper->setID(EditorAction::editorActionNode[EditorAction::EditorActionEnum::BuildHelper]);
+
 			BuildHelper_ButtonSprite->addChild(BuildHelper_Sprite);
 
 			BuildHelper_Sprite->setAnchorPoint({0.0, 0.0});
@@ -105,8 +107,9 @@ class $modify(EditorPause, EditorPauseLayer)
 			auto CopyColorPlus = CCMenuItemSpriteExtra::create(
 				CopyColorPlus_ButtonSprite,
 				this,
-				menu_selector(EditorPause::onNewToggles)); // Change this to function
-			
+				menu_selector(EditorPause::onAction)); // Change this to function
+			CopyColorPlus->setID(EditorAction::editorActionNode[EditorAction::EditorActionEnum::CopyColorPlus]);
+
 			CopyColorPlus_ButtonSprite->addChild(CopyColorPlus_Sprite);
 
 			CopyColorPlus_Sprite->setAnchorPoint({0.0, 0.0});
@@ -120,18 +123,19 @@ class $modify(EditorPause, EditorPauseLayer)
 			PasteColorPlus_ButtonSprite->setScale(0.8);
 
 			auto PasteColorPlus_Sprite = CCSprite::create("a_pasteColor+.png"_spr);
-			auto PasteColor = CCMenuItemSpriteExtra::create(
+			auto PasteColorPlus = CCMenuItemSpriteExtra::create(
 				PasteColorPlus_ButtonSprite,
 				this,
-				menu_selector(EditorPause::onNewToggles)); // Change this to function
-			
+				menu_selector(EditorPause::onAction)); // Change this to function
+			PasteColorPlus->setID(EditorAction::editorActionNode[EditorAction::EditorActionEnum::PasteColorPlus]);
+
 			PasteColorPlus_ButtonSprite->addChild(PasteColorPlus_Sprite);
 
 			PasteColorPlus_Sprite->setAnchorPoint({0.0, 0.0});
 			PasteColorPlus_Sprite->setScale(0.8);
 
-			PasteColor->setZOrder(1);
-			PasteColor->setPosition({newActionsMenu->getContentWidth() / 2.f + 50.f, newActionsMenu->getContentHeight() - 50.f});
+			PasteColorPlus->setZOrder(1);
+			PasteColorPlus->setPosition({newActionsMenu->getContentWidth() / 2.f + 50.f, newActionsMenu->getContentHeight() - 50.f});
 
 			// Create Extra Button
 			auto CreateExtra_ButtonSprite = CCSprite::create("GJ_button_04.png");
@@ -141,8 +145,8 @@ class $modify(EditorPause, EditorPauseLayer)
 			auto CreateExtra = CCMenuItemSpriteExtra::create(
 				CreateExtra_ButtonSprite,
 				this,
-				menu_selector(EditorPause::onNewToggles)); // Change this to function
-			
+				menu_selector(EditorPause::onAction)); // Change this to function
+
 			CreateExtra_ButtonSprite->addChild(CreateExtra_Sprite);
 
 			CreateExtra_Sprite->setAnchorPoint({0.0, 0.0});
@@ -159,8 +163,8 @@ class $modify(EditorPause, EditorPauseLayer)
 			auto UnlockLayers = CCMenuItemSpriteExtra::create(
 				UnlockLayers_ButtonSprite,
 				this,
-				menu_selector(EditorPause::onNewToggles)); // Change this to function
-			
+				menu_selector(EditorPause::onAction)); // Change this to function
+
 			UnlockLayers_ButtonSprite->addChild(UnlockLayers_Sprite);
 
 			UnlockLayers_Sprite->setAnchorPoint({0.0, 0.0});
@@ -177,8 +181,8 @@ class $modify(EditorPause, EditorPauseLayer)
 			auto ResetUnused = CCMenuItemSpriteExtra::create(
 				ResetUnused_ButtonSprite,
 				this,
-				menu_selector(EditorPause::onNewToggles)); // Change this to function
-			
+				menu_selector(EditorPause::onAction)); // Change this to function
+
 			ResetUnused_ButtonSprite->addChild(ResetUnused_Sprite);
 
 			ResetUnused_Sprite->setAnchorPoint({0.0, 0.0});
@@ -195,8 +199,8 @@ class $modify(EditorPause, EditorPauseLayer)
 			auto CreateLoop = CCMenuItemSpriteExtra::create(
 				CreateLoop_ButtonSprite,
 				this,
-				menu_selector(EditorPause::onNewToggles)); // Change this to function
-			
+				menu_selector(EditorPause::onAction)); // Change this to function
+
 			CreateLoop_ButtonSprite->addChild(CreateLoop_Sprite);
 
 			CreateLoop_Sprite->setAnchorPoint({0.0, 0.0});
@@ -214,8 +218,8 @@ class $modify(EditorPause, EditorPauseLayer)
 			auto UncheckPortals = CCMenuItemSpriteExtra::create(
 				UncheckPortals_ButtonSprite,
 				this,
-				menu_selector(EditorPause::onNewToggles)); // Change this to function
-			
+				menu_selector(EditorPause::onAction)); // Change this to function
+
 			UncheckPortals_ButtonSprite->addChild(UncheckPortals_Sprite);
 
 			UncheckPortals_Sprite->setAnchorPoint({0.0, 0.0});
@@ -232,8 +236,8 @@ class $modify(EditorPause, EditorPauseLayer)
 			auto Keys = CCMenuItemSpriteExtra::create(
 				Keys_ButtonSprite,
 				this,
-				menu_selector(EditorPause::onNewToggles)); // Change this to function
-			
+				menu_selector(EditorPause::onAction)); // Change this to function
+
 			Keys_ButtonSprite->addChild(Keys_Sprite);
 
 			Keys_Sprite->setAnchorPoint({0.0, 0.0});
@@ -252,8 +256,8 @@ class $modify(EditorPause, EditorPauseLayer)
 			auto Regroup = CCMenuItemSpriteExtra::create(
 				Regroup_ButtonSprite,
 				this,
-				menu_selector(EditorPause::onNewToggles)); // Change this to function
-			
+				menu_selector(EditorPause::onAction)); // Change this to function
+
 			Regroup_ButtonSprite->addChild(Regroup_Sprite);
 
 			Regroup_Sprite->setAnchorPoint({0.0, 0.0});
@@ -271,8 +275,8 @@ class $modify(EditorPause, EditorPauseLayer)
 			auto ResetScroll = CCMenuItemSpriteExtra::create(
 				ResetScroll_ButtonSprite,
 				this,
-				menu_selector(EditorPause::onNewToggles)); // Change this to function
-			
+				menu_selector(EditorPause::onAction)); // Change this to function
+
 			ResetScroll_ButtonSprite->addChild(ResetScroll_Sprite);
 
 			ResetScroll_Sprite->setAnchorPoint({0.0, 0.0});
@@ -291,7 +295,7 @@ class $modify(EditorPause, EditorPauseLayer)
 				SelectAll_ButtonSprite,
 				this,
 				menu_selector(EditorPauseLayer::onSelectAll)); // Change this to function
-			
+
 			SelectAll_ButtonSprite->addChild(SelectAll_Sprite);
 
 			SelectAll_Sprite->setAnchorPoint({0.0, 0.0});
@@ -309,8 +313,8 @@ class $modify(EditorPause, EditorPauseLayer)
 			auto AlignX = CCMenuItemSpriteExtra::create(
 				AlignX_ButtonSprite,
 				this,
-				menu_selector(EditorPause::onNewToggles)); // Change this to function
-			
+				menu_selector(EditorPause::onAction)); // Change this to function
+
 			AlignX_ButtonSprite->addChild(AlignX_Sprite);
 
 			AlignX_Sprite->setAnchorPoint({0.0, 0.0});
@@ -328,8 +332,8 @@ class $modify(EditorPause, EditorPauseLayer)
 			auto NewGroupX = CCMenuItemSpriteExtra::create(
 				NewGroupX_ButtonSprite,
 				this,
-				menu_selector(EditorPause::onNewToggles)); // Change this to function
-			
+				menu_selector(EditorPause::onAction)); // Change this to function
+
 			NewGroupX_ButtonSprite->addChild(NewGroupX_Sprite);
 
 			NewGroupX_Sprite->setAnchorPoint({0.0, 0.0});
@@ -347,8 +351,8 @@ class $modify(EditorPause, EditorPauseLayer)
 			auto SelectAllLeft = CCMenuItemSpriteExtra::create(
 				SelectAllLeft_ButtonSprite,
 				this,
-				menu_selector(EditorPause::onNewToggles)); // Change this to function
-			
+				menu_selector(EditorPause::onAction)); // Change this to function
+
 			SelectAllLeft_ButtonSprite->addChild(SelectAllLeft_Sprite);
 
 			SelectAllLeft_Sprite->setAnchorPoint({0.0, 0.0});
@@ -366,8 +370,8 @@ class $modify(EditorPause, EditorPauseLayer)
 			auto AlignY = CCMenuItemSpriteExtra::create(
 				AlignY_ButtonSprite,
 				this,
-				menu_selector(EditorPause::onNewToggles)); // Change this to function
-			
+				menu_selector(EditorPause::onAction)); // Change this to function
+
 			AlignY_ButtonSprite->addChild(AlignY_Sprite);
 
 			AlignY_Sprite->setAnchorPoint({0.0, 0.0});
@@ -385,8 +389,8 @@ class $modify(EditorPause, EditorPauseLayer)
 			auto NewGroupY = CCMenuItemSpriteExtra::create(
 				NewGroupY_ButtonSprite,
 				this,
-				menu_selector(EditorPause::onNewToggles)); // Change this to function
-			
+				menu_selector(EditorPause::onAction)); // Change this to function
+
 			NewGroupY_ButtonSprite->addChild(NewGroupY_Sprite);
 
 			NewGroupY_Sprite->setAnchorPoint({0.0, 0.0});
@@ -404,8 +408,8 @@ class $modify(EditorPause, EditorPauseLayer)
 			auto SelectAllRight = CCMenuItemSpriteExtra::create(
 				SelectAllRight_ButtonSprite,
 				this,
-				menu_selector(EditorPause::onNewToggles)); // Change this to function
-			
+				menu_selector(EditorPause::onAction)); // Change this to function
+
 			SelectAllRight_ButtonSprite->addChild(SelectAllRight_Sprite);
 
 			SelectAllRight_Sprite->setAnchorPoint({0.0, 0.0});
@@ -414,7 +418,6 @@ class $modify(EditorPause, EditorPauseLayer)
 
 			SelectAllRight->setZOrder(1);
 			SelectAllRight->setPosition({newActionsMenu->getContentWidth() / 2.f + 50.f, newActionsMenu->getContentHeight() - 265.f});
-
 
 			// TOGGLE TAB //////////////////////////////////////////////////////////////////////////////////////
 
@@ -427,7 +430,7 @@ class $modify(EditorPause, EditorPauseLayer)
 			// Add Button to Action menu
 			newActionsMenu->addChild(BuildHelper);
 			newActionsMenu->addChild(CopyColorPlus);
-			newActionsMenu->addChild(PasteColor);
+			newActionsMenu->addChild(PasteColorPlus);
 			newActionsMenu->addChild(CreateExtra);
 			newActionsMenu->addChild(UnlockLayers);
 			newActionsMenu->addChild(ResetUnused);
@@ -445,7 +448,6 @@ class $modify(EditorPause, EditorPauseLayer)
 			newActionsMenu->addChild(NewGroupY);
 			newActionsMenu->addChild(SelectAllRight);
 
-
 			// Add Menu into the Editor Pause Layer
 			this->addChild(newActionsMenu);
 			this->addChild(newTogglesMenu);
@@ -453,7 +455,7 @@ class $modify(EditorPause, EditorPauseLayer)
 			newActionsMenu->addChild(ActionMenuSprite);
 			newTogglesMenu->addChild(TogglesMenuSprite);
 			infoMenu->addChild(infoMenuSprite);
-			
+
 			// Add Title to the Action Menu
 			newActionsMenu->addChild(ActionTitle);
 			newActionsMenu->addChild(QuickActionTitle);
@@ -474,9 +476,42 @@ class $modify(EditorPause, EditorPauseLayer)
 		Notification::create("Button yes", NotificationIcon::Success, 2.f)->show();
 	};
 
-	void onBuildHelper(CCObject * sender)
+	void onAction(CCObject * sender)
 	{
-		Notification::create("Build Helper", NotificationIcon::Success, 2.f)->show();
-		EditorPauseLayer::onBuildHelper(sender);
+		CCNode *nodeObject = as<CCNode *>(sender);
+		auto nodeID = nodeObject->getID();
+
+		log::debug("Processing editor action of ID {}...", nodeID.c_str());
+
+		auto validation = EditorAction::editorActionName[nodeID];
+
+		if (validation.empty())
+		{
+			log::error("Editor action '{}' invalid", nodeID.c_str());
+		}
+		else
+		{
+			log::debug("Editor action '{}' valid", nodeID.c_str());
+
+			if (getThisMod->getSettingValue<bool>("confirm-use"))
+			{
+				geode::createQuickPopup(
+					validation.c_str(),
+					fmt::format("Would you like to use <cy>{}</c>?", validation.c_str()),
+					"Cancel", "Yes",
+					[this, sender, nodeID](auto, bool btn2)
+					{
+						if (btn2)
+						{
+							log::debug("Initiating editor action with ID {}", nodeID.c_str());
+							EditorPause::onNewToggles(sender);
+						};
+					});
+			}
+			else
+			{
+				EditorPause::onNewToggles(sender);
+			};
+		};
 	};
 };

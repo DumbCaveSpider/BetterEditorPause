@@ -31,6 +31,11 @@
 		}
 	],
 	"settings": {
+		"ui": {
+			"name": "Interface",
+			"description": "The mod's user interface.",
+			"type": "title"
+		},
 		"move-toggles":{
 			"name": "Move Editor Pause Settings",
 			"description": "Move the editor pause menu's toggle settings to an organized popup.",
@@ -40,6 +45,17 @@
 		"move-tools":{
 			"name": "Move Editor Pause Actions",
 			"description": "Move the editor pause menu's action buttons to an organized popup.",
+			"type": "bool",
+			"default": true
+		},
+		"functions":{
+			"name": "Functionality",
+			"description": "How the mod functions.",
+			"type": "title"
+		},
+		"confirm-use":{
+			"name": "Confirm Actions",
+			"description": "Add a confirmation popup when using an editor action.",
 			"type": "bool",
 			"default": true
 		}
