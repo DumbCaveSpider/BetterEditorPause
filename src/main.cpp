@@ -4,6 +4,7 @@
 #include <Geode/Loader.hpp>
 
 #include <Geode/modify/EditorPauseLayer.hpp>
+#include <Geode/binding/EditorPauseLayer.hpp>
 
 using namespace geode::prelude;
 
@@ -86,7 +87,7 @@ class $modify(EditorPause, EditorPauseLayer)
 			auto BuildHelper = CCMenuItemSpriteExtra::create(
 				BuildHelper_ButtonSprite,
 				this,
-				menu_selector(EditorPause::onNewToggles)); // Change this to function
+				menu_selector(EditorPause::onBuildHelper)); // Change this to function
 			
 			BuildHelper_ButtonSprite->addChild(BuildHelper_Sprite);
 
@@ -289,7 +290,7 @@ class $modify(EditorPause, EditorPauseLayer)
 			auto SelectAll = CCMenuItemSpriteExtra::create(
 				SelectAll_ButtonSprite,
 				this,
-				menu_selector(EditorPause::onNewToggles)); // Change this to function
+				menu_selector(EditorPauseLayer::onSelectAll)); // Change this to function
 			
 			SelectAll_ButtonSprite->addChild(SelectAll_Sprite);
 
@@ -471,5 +472,11 @@ class $modify(EditorPause, EditorPauseLayer)
 	void onNewToggles(CCObject * sender)
 	{
 		Notification::create("Button yes", NotificationIcon::Success, 2.f)->show();
+	};
+
+	void onBuildHelper(CCObject * sender)
+	{
+		Notification::create("Build Helper", NotificationIcon::Success, 2.f)->show();
+		EditorPauseLayer::onBuildHelper(sender);
 	};
 };
