@@ -26,7 +26,7 @@
 	"dependencies": [
 		{
 			"id": "geode.node-ids",
-			"version": "*",
+			"version": ">=1.15.0",
 			"importance": "required"
 		}
 	],
@@ -36,24 +36,24 @@
 			"description": "The mod's user interface.",
 			"type": "title"
 		},
-		"move-toggles":{
+		"move-toggles": {
 			"name": "Move Editor Pause Settings",
 			"description": "Move the editor pause menu's toggle settings to an organized popup.",
 			"type": "bool",
 			"default": true
 		},
-		"move-tools":{
+		"move-tools": {
 			"name": "Move Editor Pause Actions",
 			"description": "Move the editor pause menu's action buttons to an organized popup.",
 			"type": "bool",
 			"default": true
 		},
-		"functions":{
+		"functions": {
 			"name": "Functionality",
 			"description": "How the mod functions.",
 			"type": "title"
 		},
-		"confirm-use":{
+		"confirm-use": {
 			"name": "Confirm Actions",
 			"description": "Add a confirmation popup when using an editor action.",
 			"type": "bool",
@@ -64,5 +64,10 @@
 		"community": "https://discord.gg/2jPCtJhHNp",
 		"homepage": "https://www.arcticwoof.com.au/",
 		"source": "https://github.com/DumbCaveSpider/BetterEditorPause"
+	},
+	"api": {
+		"include": [
+			"src/util/*.hpp"
+		]
 	}
 }

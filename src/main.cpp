@@ -1,10 +1,11 @@
-#include "util/EditorAction.hpp"
+#include "util/EditorEnum.hpp"
 #include "popups/CustomPopupLayer.hpp"
 
 #include <Geode/Geode.hpp>
 #include <Geode/Loader.hpp>
 
 #include <Geode/modify/EditorPauseLayer.hpp>
+
 #include <Geode/binding/EditorPauseLayer.hpp>
 
 using namespace geode::prelude;
@@ -89,7 +90,7 @@ class $modify(EditorPause, EditorPauseLayer)
 				BuildHelper_ButtonSprite,
 				this,
 				menu_selector(EditorPause::onBuildHelper)); // Change this to function
-			BuildHelper->setID(EditorAction::editorActionNode[EditorAction::EditorActionEnum::BuildHelper]);
+			BuildHelper->setID(EditorEnum::editorActionNode[EditorEnum::EditorAction::BuildHelper]);
 
 			BuildHelper_ButtonSprite->addChild(BuildHelper_Sprite);
 
@@ -108,7 +109,7 @@ class $modify(EditorPause, EditorPauseLayer)
 				CopyColorPlus_ButtonSprite,
 				this,
 				menu_selector(EditorPause::onAction)); // Change this to function
-			CopyColorPlus->setID(EditorAction::editorActionNode[EditorAction::EditorActionEnum::CopyColorPlus]);
+			CopyColorPlus->setID(EditorEnum::editorActionNode[EditorEnum::EditorAction::CopyColorPlus]);
 
 			CopyColorPlus_ButtonSprite->addChild(CopyColorPlus_Sprite);
 
@@ -127,7 +128,7 @@ class $modify(EditorPause, EditorPauseLayer)
 				PasteColorPlus_ButtonSprite,
 				this,
 				menu_selector(EditorPause::onAction)); // Change this to function
-			PasteColorPlus->setID(EditorAction::editorActionNode[EditorAction::EditorActionEnum::PasteColorPlus]);
+			PasteColorPlus->setID(EditorEnum::editorActionNode[EditorEnum::EditorAction::PasteColorPlus]);
 
 			PasteColorPlus_ButtonSprite->addChild(PasteColorPlus_Sprite);
 
@@ -146,6 +147,7 @@ class $modify(EditorPause, EditorPauseLayer)
 				CreateExtra_ButtonSprite,
 				this,
 				menu_selector(EditorPause::onAction)); // Change this to function
+			CreateExtra->setID(EditorEnum::editorActionNode[EditorEnum::EditorAction::CreateExtras]);
 
 			CreateExtra_ButtonSprite->addChild(CreateExtra_Sprite);
 
@@ -164,6 +166,7 @@ class $modify(EditorPause, EditorPauseLayer)
 				UnlockLayers_ButtonSprite,
 				this,
 				menu_selector(EditorPause::onAction)); // Change this to function
+			UnlockLayers->setID(EditorEnum::editorActionNode[EditorEnum::EditorAction::UnlockLayers]);
 
 			UnlockLayers_ButtonSprite->addChild(UnlockLayers_Sprite);
 
@@ -182,6 +185,7 @@ class $modify(EditorPause, EditorPauseLayer)
 				ResetUnused_ButtonSprite,
 				this,
 				menu_selector(EditorPause::onAction)); // Change this to function
+			ResetUnused->setID(EditorEnum::editorActionNode[EditorEnum::EditorAction::ResetUnused]);
 
 			ResetUnused_ButtonSprite->addChild(ResetUnused_Sprite);
 
@@ -200,6 +204,7 @@ class $modify(EditorPause, EditorPauseLayer)
 				CreateLoop_ButtonSprite,
 				this,
 				menu_selector(EditorPause::onAction)); // Change this to function
+			CreateLoop->setID(EditorEnum::editorActionNode[EditorEnum::EditorAction::CreateLoop]);
 
 			CreateLoop_ButtonSprite->addChild(CreateLoop_Sprite);
 
@@ -219,6 +224,7 @@ class $modify(EditorPause, EditorPauseLayer)
 				UncheckPortals_ButtonSprite,
 				this,
 				menu_selector(EditorPause::onAction)); // Change this to function
+			UncheckPortals->setID(EditorEnum::editorActionNode[EditorEnum::EditorAction::UncheckPortals]);
 
 			UncheckPortals_ButtonSprite->addChild(UncheckPortals_Sprite);
 
@@ -483,7 +489,7 @@ class $modify(EditorPause, EditorPauseLayer)
 
 		log::debug("Processing editor action of ID {}...", nodeID.c_str());
 
-		auto validation = EditorAction::editorActionName[nodeID];
+		auto validation = EditorEnum::editorActionName[nodeID];
 
 		if (validation.empty())
 		{
@@ -491,7 +497,7 @@ class $modify(EditorPause, EditorPauseLayer)
 		}
 		else
 		{
-			log::debug("Editor action '{}' valid", nodeID.c_str());
+			log::debug("Editor action {} valid", nodeID.c_str());
 
 			if (getThisMod->getSettingValue<bool>("confirm-use"))
 			{
@@ -504,13 +510,83 @@ class $modify(EditorPause, EditorPauseLayer)
 						if (btn2)
 						{
 							log::debug("Initiating editor action with ID {}", nodeID.c_str());
-							EditorPause::onNewToggles(sender);
+							EditorPause::initiateAction(nodeID, sender);
 						};
 					});
 			}
 			else
 			{
-				EditorPause::onNewToggles(sender);
+				EditorPause::initiateAction(nodeID, sender);
+			};
+		};
+	};
+
+	void onOption(CCObject * sender)
+	{
+		CCNode *nodeObject = as<CCNode *>(sender);
+		auto nodeID = nodeObject->getID();
+
+		log::debug("Processing editor option of ID {}...", nodeID.c_str());
+
+		auto validation = EditorEnum::editorOptionName[nodeID];
+
+		if (validation.empty())
+		{
+			log::error("Editor option '{}' invalid", nodeID.c_str());
+		}
+		else
+		{
+			log::error("Editor option {} valid", nodeID.c_str());
+
+			EditorPause::initiateAction(nodeID, sender);
+		};
+	};
+
+	void initiateAction(std::string actionID, CCObject * sender)
+	{
+		auto validate = EditorEnum::editorActionName[actionID];
+
+		if (validate.empty())
+		{
+			log::error("Cannot initiate editor action of invalid ID '{}'", validate.c_str());
+		}
+		else
+		{
+			if (actionID == EditorEnum::editorActionNode[EditorEnum::EditorAction::BuildHelper])
+			{
+				EditorPauseLayer::onBuildHelper(sender);
+				// }
+				// else if (actionID == EditorEnum::editorActionNode[EditorEnum::EditorAction::CopyColorPlus])
+				// {
+				// 	EditorPauseLayer::onCopyWColor(sender);
+				// }
+				// else if (actionID == EditorEnum::editorActionNode[EditorEnum::EditorAction::PasteColorPlus])
+				// {
+				// 	EditorPauseLayer::onPasteWColor(sender);
+			}
+			else if (actionID == EditorEnum::editorActionNode[EditorEnum::EditorAction::CreateExtras])
+			{
+				EditorPauseLayer::onCreateExtras(sender);
+				// }
+				// else if (actionID == EditorEnum::editorActionNode[EditorEnum::EditorAction::UnlockLayers])
+				// {
+				// 	EditorPauseLayer::onUnlockAllLayers(sender);
+				// }
+				// else if (actionID == EditorEnum::editorActionNode[EditorEnum::EditorAction::ResetUnused])
+				// {
+				// 	EditorPauseLayer::doResetUnused(sender);
+				// }
+				// else if (actionID == EditorEnum::editorActionNode[EditorEnum::EditorAction::CreateLoop])
+				// {
+				// 	EditorPauseLayer::onCreateLoop(sender);
+				// }
+				// else if (actionID == EditorEnum::editorActionNode[EditorEnum::EditorAction::UncheckPortals])
+				// {
+				// 	EditorPauseLayer::uncheckAllPortals(sender);
+				// }
+				// else if (actionID == EditorEnum::editorActionNode[EditorEnum::EditorAction::Keys])
+				// {
+				// 	EditorPauseLayer::onKeybindings(sender);
 			};
 		};
 	};

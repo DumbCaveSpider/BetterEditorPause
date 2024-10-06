@@ -11,10 +11,10 @@
 
 using namespace geode::prelude;
 
-class EditorAction
+class EditorEnum
 {
 public:
-    enum class EditorActionEnum
+    enum class EditorAction
     {
         BuildHelper = 1,
         CopyColorPlus = 2,
@@ -37,7 +37,15 @@ public:
         SelectAllRight = 18
     };
 
-    static std::map<EditorActionEnum, std::string> editorActionNode;
+    enum class EditorOption
+    {
+        PreviewMode = 1
+    };
+
+    static std::map<EditorAction, std::string> editorActionNode;
     static std::map<std::string, std::string> editorActionName;
     static std::map<std::string, std::string> editorActionIcon;
+
+    static std::map<EditorOption, std::string> editorOptionNode;
+    static std::map<std::string, std::string> editorOptionName;
 };
