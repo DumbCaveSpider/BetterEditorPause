@@ -12,6 +12,7 @@ using namespace geode::prelude;
 
 auto getThisMod = geode::getMod();
 auto gm = GameManager::get();
+auto winSize = CCDirector::sharedDirector()->getWinSize();
 
 class $modify(EditorPause, EditorPauseLayer)
 {
@@ -19,23 +20,30 @@ class $modify(EditorPause, EditorPauseLayer)
 	{
 		if (EditorPauseLayer::init(p0))
 		{
+
+			// For all of the people reading this code, I'm sorry. I'm sorry for the mess I've created.
+			// Be sure you have a good day, and remember to drink water and eat food.
+
+
 			auto actionsMenu = this->getChildByID("actions-menu");
 			auto smallActionsMenu = this->getChildByID("small-actions-menu");
 			auto togglesMenu = this->getChildByID("options-menu");
 			auto settingsMenu = this->getChildByID("settings-menu");
 			auto infoMenu = this->getChildByID("info-menu");
+			auto resumeMenu = this->getChildByID("resume-menu");
 
 			actionsMenu->removeMeAndCleanup();
 			smallActionsMenu->removeMeAndCleanup();
 			togglesMenu->removeMeAndCleanup();
 			settingsMenu->removeMeAndCleanup();
+			//resumeMenu->removeMeAndCleanup();
 
 			// newTogglesMenu menu
 			auto newTogglesMenu = CCMenu::create();
 			newTogglesMenu->setID("options-menu"_spr);
 			newTogglesMenu->ignoreAnchorPointForPosition(false);
 			newTogglesMenu->setScaledContentSize({150.f, 300.f});
-			newTogglesMenu->setPosition({90.f, 160.f});
+			newTogglesMenu->setPosition({this->getContentWidth() + 90.f, 160.f});
 
 			CCScale9Sprite *TogglesMenuSprite = CCScale9Sprite::create("square02b_001.png");
 			TogglesMenuSprite->ignoreAnchorPointForPosition(false);
@@ -57,6 +65,13 @@ class $modify(EditorPause, EditorPauseLayer)
 			ActionMenuSprite->setAnchorPoint({0.0, 0.0});
 			ActionMenuSprite->setOpacity(150);
 			ActionMenuSprite->setColor(ccColor3B(0, 0, 0));
+
+			// newResumeMenu menu
+			auto newResumeMenu = CCMenu::create();
+			newResumeMenu->setID("resume_menu"_spr);
+			newResumeMenu->ignoreAnchorPointForPosition(false);
+			newResumeMenu->setScaledContentSize({200.f, 220.f});
+			newResumeMenu->setPosition({this->getContentWidth() / 2.f, 160.f});
 
 			// infoMenu background
 			CCScale9Sprite *infoMenuSprite = CCScale9Sprite::create("square02b_001.png");
@@ -450,6 +465,27 @@ class $modify(EditorPause, EditorPauseLayer)
 			togglePreviewMode->ignoreAnchorPointForPosition(false);
 			togglePreviewMode->toggle(isPreviewMode);
 
+			// RESUME BUTTON //////////////////////////////////////////////////////////////////////////////////////
+
+			// Resume Button (pls fix this, it kept crashing the game and it does no logs)
+			/*
+			auto resumeButton_Sprite = CCSprite::create("r_resumeToEditor.png"_spr);
+			resumeButton_Sprite->setScale(0.8);
+
+			auto resumeButton = CCMenuItemSpriteExtra::create(
+				resumeButton_Sprite,
+				this,
+				menu_selector(EditorPause::onNewToggles));
+
+			resumeButton_Sprite->addChild(resumeButton);
+			
+			resumeButton->setZOrder(1);
+			resumeButton->setPosition({newResumeMenu->getContentWidth() / 2.f, newResumeMenu->getContentHeight()});
+			resumeButton->ignoreAnchorPointForPosition(false);
+
+			// Add Buttons to Resume Menu
+			newResumeMenu->addChild(resumeButton);
+			*/
 			// Add Toggles to Toggles Menu
 			newTogglesMenu->addChild(togglePreviewMode);
 
@@ -477,6 +513,7 @@ class $modify(EditorPause, EditorPauseLayer)
 			// Add Menu into the Editor Pause Layer
 			this->addChild(newActionsMenu);
 			this->addChild(newTogglesMenu);
+			this->addChild(newResumeMenu);
 
 			newActionsMenu->addChild(ActionMenuSprite);
 			newTogglesMenu->addChild(TogglesMenuSprite);
