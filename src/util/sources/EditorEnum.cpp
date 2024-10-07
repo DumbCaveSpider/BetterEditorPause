@@ -85,3 +85,6 @@ std::map<EditorEnum::EditorOption, std::string> EditorEnum::editorOptionNode{
 
 std::map<std::string, std::string> EditorEnum::editorOptionName{
     {EditorEnum::editorOptionNode[EditorEnum::EditorOption::PreviewMode], "Preview Mode"}};
+
+std::map<std::string, std::string> EditorEnum::editorOptionVar{
+    {EditorEnum::editorOptionNode[EditorEnum::EditorOption::PreviewMode], "0036"}};

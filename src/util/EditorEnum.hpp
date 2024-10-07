@@ -48,4 +48,5 @@ public:
 
     static std::map<EditorOption, std::string> editorOptionNode;
     static std::map<std::string, std::string> editorOptionName;
+    static std::map<std::string, std::string> editorOptionVar;
 };

@@ -11,6 +11,7 @@
 using namespace geode::prelude;
 
 auto getThisMod = geode::getMod();
+auto gm = GameManager::get();
 
 class $modify(EditorPause, EditorPauseLayer)
 {
@@ -434,17 +435,20 @@ class $modify(EditorPause, EditorPauseLayer)
 			OptionTitle->ignoreAnchorPointForPosition(false);
 
 			// Preview Mode Button
-			bool isPreviewMode = GameManager::get()->getGameVariable("0036");
 
-			  auto togglePreviewMode = CCMenuItemToggler::create(
-				CCSprite::create("t_previewModeOff.png"_spr),
-				CCSprite::create("t_previewModeOn.png"_spr),
-				this, menu_selector(EditorPauseLayer::togglePreviewAnim)); // this isnt right btw
+			auto togglePreviewMode = CCMenuItemToggler::create(
+				CCSprite::create("t_previewModeOff.png"_spr), CCSprite::create("t_previewModeOn.png"_spr),
+				this,
+				menu_selector(EditorPause::onOption)); // this isnt right btw // well this is :]
+			togglePreviewMode->setID(EditorEnum::editorOptionNode[EditorEnum::EditorOption::PreviewMode]);
+
+			bool isPreviewMode = gm->getGameVariable(EditorEnum::editorOptionVar[togglePreviewMode->getID()].c_str());
 
 			togglePreviewMode->setZOrder(1);
 			togglePreviewMode->setScale(0.6);
 			togglePreviewMode->setPosition({newTogglesMenu->getContentWidth() / 2.f, newTogglesMenu->getContentHeight() - 40.f});
 			togglePreviewMode->ignoreAnchorPointForPosition(false);
+			togglePreviewMode->toggle(isPreviewMode);
 
 			// Add Toggles to Toggles Menu
 			newTogglesMenu->addChild(togglePreviewMode);
@@ -554,7 +558,7 @@ class $modify(EditorPause, EditorPauseLayer)
 		{
 			log::error("Editor option {} valid", nodeID.c_str());
 
-			EditorPause::initiateAction(nodeID, sender);
+			EditorPause::initiateOption(nodeID, sender);
 		};
 	};
 
@@ -564,10 +568,12 @@ class $modify(EditorPause, EditorPauseLayer)
 
 		if (validate.empty())
 		{
-			log::error("Cannot initiate editor action of invalid ID '{}'", validate.c_str());
+			log::error("Cannot initiate editor action of invalid ID '{}'", actionID);
 		}
 		else
 		{
+			log::debug("Initiating editor action of ID {}...", actionID);
+
 			if (actionID == EditorEnum::editorActionNode[EditorEnum::EditorAction::BuildHelper])
 			{
 				EditorPauseLayer::onBuildHelper(sender);
@@ -604,6 +610,26 @@ class $modify(EditorPause, EditorPauseLayer)
 				// {
 				// 	EditorPauseLayer::onKeybindings(sender);
 			};
+		};
+	};
+
+	void initiateOption(std::string optionID, CCObject * sender)
+	{
+		auto nodeObject = as<CCNode *>(sender);
+		auto togglerObject = as<CCMenuItemToggler *>(nodeObject);
+
+		auto validate = EditorEnum::editorActionName[optionID];
+
+		if (validate.empty())
+		{
+			log::error("Cannot initiate editor action of invalid ID '{}'", optionID);
+		}
+		else
+		{
+			log::debug("Toggling editor option of ID {}...", optionID);
+
+			m_editorLayer->updateEditorMode();
+			togglerObject->toggle(gm->getGameVariable(EditorEnum::editorOptionVar[nodeObject->getID()].c_str()));
 		};
 	};
 };
