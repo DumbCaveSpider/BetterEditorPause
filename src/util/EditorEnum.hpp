@@ -14,7 +14,7 @@ using namespace geode::prelude;
 class EditorEnum
 {
 public:
-    enum class EditorAction
+    enum class Action
     {
         BuildHelper = 1,
         CopyColorPlus = 2,
@@ -37,16 +37,28 @@ public:
         SelectAllRight = 18
     };
 
-    enum class EditorOption
+    enum class Option
     {
-        PreviewMode = 1
+        PreviewMode = 1,
+        PreviewAnimations = 2,
+        PreviewParticles = 3,
+        PreviewShaders = 4,
+        ShowHitboxes = 5,
+        HideInvisible = 6,
+        ShowGround = 7,
+        ShowObjectInfo = 8,
+        ShowGrid = 9,
+        SelectFilter = 10,
+        IgnoreDamage = 11
     };
 
-    static std::map<EditorAction, std::string> editorActionNode;
-    static std::map<std::string, std::string> editorActionName;
-    static std::map<std::string, std::string> editorActionIcon;
+    static std::map<Action, std::string> actionNode;
+    static std::map<std::string, std::string> actionName;
+    static std::map<std::string, std::string> actionIcon;
 
-    static std::map<EditorOption, std::string> editorOptionNode;
-    static std::map<std::string, std::string> editorOptionName;
-    static std::map<std::string, std::string> editorOptionVar;
+    static std::map<Option, std::string> optionNode;
+    static std::map<std::string, std::string> optionName;
+    static std::map<std::string, std::string> optionSpriteEnabled;
+    static std::map<std::string, std::string> optionSpriteDisabled;
+    static std::map<std::string, std::string> optionVar;
 };

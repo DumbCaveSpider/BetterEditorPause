@@ -51,6 +51,7 @@ class $modify(EditorPause, EditorPauseLayer)
 			newActionsMenu->setZOrder(1);
 
 			CCScale9Sprite *newActionsMenu_sprite = CCScale9Sprite::create("square02b_001.png");
+			newActionsMenu_sprite->setID("panel-actions"_spr);
 			newActionsMenu_sprite->ignoreAnchorPointForPosition(false);
 			newActionsMenu_sprite->setScaledContentSize({150.f, 300.f});
 			newActionsMenu_sprite->setPosition({this->getContentWidth() - 90.f, 160.f});
@@ -58,7 +59,7 @@ class $modify(EditorPause, EditorPauseLayer)
 			newActionsMenu_sprite->setColor(ccColor3B(0, 0, 0));
 			newActionsMenu_sprite->setZOrder(0);
 
-			auto newActionsMenu_layout = AxisLayout::create(Axis::Row);
+			AxisLayout *newActionsMenu_layout = AxisLayout::create(Axis::Row);
 			newActionsMenu_layout->setGap(30.f);
 			newActionsMenu_layout->setAutoScale(true);
 			newActionsMenu_layout->setGrowCrossAxis(true);
@@ -66,9 +67,9 @@ class $modify(EditorPause, EditorPauseLayer)
 			newActionsMenu_layout->setAxisAlignment(AxisAlignment::Even);
 			newActionsMenu_layout->setCrossAxisAlignment(AxisAlignment::Even);
 			newActionsMenu_layout->setCrossAxisLineAlignment(AxisAlignment::Even);
-			// newActionsMenu_layout->setAutoGrowAxis(true);
+			newActionsMenu_layout->ignoreInvisibleChildren(true);
 
-			auto newActionsMenu_layoutOptions = AxisLayoutOptions::create();
+			AxisLayoutOptions *newActionsMenu_layoutOptions = AxisLayoutOptions::create();
 
 			newActionsMenu->setLayout(newActionsMenu_layout, true, false);
 			newActionsMenu->setLayoutOptions(newActionsMenu_layoutOptions, true);
@@ -77,15 +78,31 @@ class $modify(EditorPause, EditorPauseLayer)
 			auto newTogglesMenu = CCMenu::create();
 			newTogglesMenu->setID("options-menu"_spr);
 			newTogglesMenu->ignoreAnchorPointForPosition(false);
-			newTogglesMenu->setScaledContentSize({150.f, 300.f});
-			newTogglesMenu->setPosition({this->getContentWidth() + 90.f, 160.f});
+			newTogglesMenu->setZOrder(1);
 
-			CCScale9Sprite *TogglesMenuSprite = CCScale9Sprite::create("square02b_001.png");
-			TogglesMenuSprite->ignoreAnchorPointForPosition(false);
-			TogglesMenuSprite->setScaledContentSize(newTogglesMenu->getScaledContentSize());
-			TogglesMenuSprite->setAnchorPoint({0.0, 0.0});
-			TogglesMenuSprite->setOpacity(150);
-			TogglesMenuSprite->setColor(ccColor3B(0, 0, 0));
+			CCScale9Sprite *newTogglesMenu_sprite = CCScale9Sprite::create("square02b_001.png");
+			newTogglesMenu_sprite->setID("panel-options"_spr);
+			newTogglesMenu_sprite->ignoreAnchorPointForPosition(false);
+			newTogglesMenu_sprite->setScaledContentSize({150.f, 300.f});
+			newTogglesMenu_sprite->setPosition({90.f, 160.f});
+			newTogglesMenu_sprite->setOpacity(150);
+			newTogglesMenu_sprite->setColor(ccColor3B(0, 0, 0));
+			newTogglesMenu_sprite->setZOrder(0);
+
+			AxisLayout *newTogglesMenu_layout = AxisLayout::create(Axis::Column);
+			newTogglesMenu_layout->setGap(5.f);
+			newTogglesMenu_layout->setAutoScale(true);
+			newTogglesMenu_layout->setGrowCrossAxis(false);
+			newTogglesMenu_layout->setCrossAxisOverflow(false);
+			newTogglesMenu_layout->setAxisAlignment(AxisAlignment::Even);
+			newTogglesMenu_layout->setCrossAxisAlignment(AxisAlignment::Even);
+			newTogglesMenu_layout->setCrossAxisLineAlignment(AxisAlignment::Even);
+			newTogglesMenu_layout->ignoreInvisibleChildren(true);
+
+			AxisLayoutOptions *newTogglesMenu_layoutOptions = AxisLayoutOptions::create();
+
+			newTogglesMenu->setLayout(newTogglesMenu_layout, true, false);
+			newTogglesMenu->setLayoutOptions(newTogglesMenu_layoutOptions, true);
 
 			// newResumeMenu menu
 			auto newResumeMenu = CCMenu::create();
@@ -105,33 +122,32 @@ class $modify(EditorPause, EditorPauseLayer)
 			// ACTION TAB //////////////////////////////////////////////////////////////////////////////////////
 
 			// Action Title
-			auto ActionTitle = CCLabelBMFont::create("Actions", "goldFont.fnt");
-			ActionTitle->setScale(0.75);
-			ActionTitle->setPosition({newActionsMenu_sprite->getContentWidth() / 2, newActionsMenu_sprite->getContentHeight() - 15.f});
+			auto ActionTitle = CCLabelBMFont::create("Creator Actions", "goldFont.fnt");
+			ActionTitle->setScale(0.625);
+			ActionTitle->setPosition({newActionsMenu_sprite->getContentWidth() / 2, newActionsMenu_sprite->getContentHeight() - 20.f});
 			ActionTitle->ignoreAnchorPointForPosition(false);
 			ActionTitle->setZOrder(1);
 
 			// All Action Buttons //////////////////////////////////////////////////////////////////////////////////////
-
-			for (const auto &pair : EditorEnum::editorActionNode)
+			for (const auto &pair : EditorEnum::actionNode)
 			{
-				auto validateName = EditorEnum::editorActionName[pair.second];
-				auto validateIcon = EditorEnum::editorActionIcon[pair.second];
+				auto validateName = EditorEnum::actionName[pair.second];
+				auto validateIcon = EditorEnum::actionIcon[pair.second];
 
 				if (validateName.empty() || validateIcon.empty())
 				{
-					log::error("Invalid action of ID '{}' or missing sprite name", validateName.c_str());
+					log::error("Action of ID '{}' invalid or missing sprite name", pair.second.c_str());
 				}
 				else
 				{
-					log::debug("Creating action button of ID {}...", validateName.c_str());
+					log::debug("Creating action button of ID {}...", pair.second.c_str());
 
 					auto actionButtonSprite = CCSprite::create("GJ_button_04.png");
 
 					auto actionSprite = CCSprite::create(validateIcon.c_str());
 					actionSprite->setAnchorPoint({0.5, 0.5});
 					actionSprite->setPosition({actionButtonSprite->getScaledContentWidth() / 2, actionButtonSprite->getScaledContentHeight() / 2});
-					actionSprite->setScale(0.75);
+					actionSprite->setScale(0.625);
 
 					actionButtonSprite->addChild(actionSprite);
 
@@ -145,33 +161,49 @@ class $modify(EditorPause, EditorPauseLayer)
 					newActionsMenu->addChild(action);
 					newActionsMenu->updateLayout();
 
-					log::debug("Created action button {}", validateName.c_str());
+					log::debug("Created action button {}", pair.second.c_str());
 				};
 			};
 
 			// TOGGLE TAB //////////////////////////////////////////////////////////////////////////////////////
 
 			// Options Title
-			auto OptionTitle = CCLabelBMFont::create("Togglable Options", "goldFont.fnt");
-			OptionTitle->setScale(0.5);
-			OptionTitle->setPosition({newTogglesMenu->getContentWidth() / 2.f, newTogglesMenu->getContentHeight() - 15.f});
+			auto OptionTitle = CCLabelBMFont::create("Editor Options", "goldFont.fnt");
+			OptionTitle->setScale(0.625);
+			OptionTitle->setPosition({newTogglesMenu_sprite->getContentWidth() / 2.f, newTogglesMenu_sprite->getContentHeight() - 20.f});
 			OptionTitle->ignoreAnchorPointForPosition(false);
 
-			// Preview Mode Button
+			// All Option Buttons //////////////////////////////////////////////////////////////////////////////////////
+			for (const auto &pair : EditorEnum::optionNode)
+			{
+				auto validateName = EditorEnum::optionName[pair.second];
+				auto validateVar = EditorEnum::optionVar[pair.second];
 
-			auto togglePreviewMode = CCMenuItemToggler::create(
-				CCSprite::create("t_previewModeOff.png"_spr), CCSprite::create("t_previewModeOn.png"_spr),
-				this,
-				menu_selector(EditorPause::onOption)); // this isnt right btw // well this is :]
-			togglePreviewMode->setID(EditorEnum::editorOptionNode[EditorEnum::EditorOption::PreviewMode]);
+				if (validateName.empty() || validateVar.empty())
+				{
+					log::error("Option of ID '{}' invalid or missing game variable", pair.second.c_str());
+				}
+				else
+				{
+					log::debug("Creating option button of ID {}...", pair.second.c_str());
 
-			bool isPreviewMode = gm->getGameVariable(EditorEnum::editorOptionVar[togglePreviewMode->getID()].c_str());
+					bool isToggled = gm->getGameVariable(validateVar.c_str());
 
-			togglePreviewMode->setZOrder(1);
-			togglePreviewMode->setScale(0.6);
-			togglePreviewMode->setPosition({newTogglesMenu->getContentWidth() / 2.f, newTogglesMenu->getContentHeight() - 40.f});
-			togglePreviewMode->ignoreAnchorPointForPosition(false);
-			togglePreviewMode->toggle(isPreviewMode);
+					auto toggle = CCMenuItemToggler::create(
+						CCSprite::create(EditorEnum::optionSpriteDisabled[pair.second].c_str()), CCSprite::create(EditorEnum::optionSpriteEnabled[pair.second].c_str()),
+						this,
+						menu_selector(EditorPause::onOption)); // this isnt right btw // well this is :]
+					toggle->setID(pair.second);
+					toggle->setZOrder(1);
+					toggle->setScale(0.375);
+					toggle->toggle(isToggled);
+
+					newTogglesMenu->addChild(toggle);
+					newTogglesMenu->updateLayout(true);
+
+					log::debug("Created option button {}", pair.second.c_str());
+				};
+			};
 
 			// RESUME BUTTON //////////////////////////////////////////////////////////////////////////////////////
 
@@ -194,28 +226,31 @@ class $modify(EditorPause, EditorPauseLayer)
 			// Add Buttons to Resume Menu
 			newResumeMenu->addChild(resumeButton);
 			*/
-			// Add Toggles to Toggles Menu
-			newTogglesMenu->addChild(togglePreviewMode);
 
 			newActionsMenu->setContentWidth(newActionsMenu_sprite->getContentWidth());
 			newActionsMenu->setPosition({newActionsMenu_sprite->getContentWidth() / 2, newActionsMenu_sprite->getContentHeight() * 0.45f});
 			newActionsMenu->setScale(0.75);
 			newActionsMenu->updateLayout(true);
 
+			newTogglesMenu->setContentWidth(newTogglesMenu_sprite->getContentWidth());
+			newTogglesMenu->setPosition({newTogglesMenu_sprite->getContentWidth() / 2, newTogglesMenu_sprite->getContentHeight() * 0.45f});
+			newTogglesMenu->setScale(0.75);
+			newTogglesMenu->updateLayout(true);
+
 			// Add Menu into the Editor Pause Layer
 			newActionsMenu_sprite->addChild(newActionsMenu);
-			this->addChild(newTogglesMenu);
+			newTogglesMenu_sprite->addChild(newTogglesMenu);
 			this->addChild(newResumeMenu);
 
 			this->addChild(newActionsMenu_sprite);
-			newTogglesMenu->addChild(TogglesMenuSprite);
+			this->addChild(newTogglesMenu_sprite);
 			infoMenu->addChild(infoMenuSprite);
 
 			// Add Title to the Action Menu
 			newActionsMenu_sprite->addChild(ActionTitle);
 
 			// Add Title to the Toggles Menu
-			newTogglesMenu->addChild(OptionTitle);
+			newTogglesMenu_sprite->addChild(OptionTitle);
 
 			bool isBetterEditLoaded = getThisLoader->isModLoaded("hjfod.betteredit");
 
@@ -249,7 +284,7 @@ class $modify(EditorPause, EditorPauseLayer)
 
 		log::debug("Processing editor action of ID {}...", nodeID.c_str());
 
-		auto validation = EditorEnum::editorActionName[nodeID];
+		auto validation = EditorEnum::actionName[nodeID];
 
 		if (validation.empty())
 		{
@@ -288,7 +323,7 @@ class $modify(EditorPause, EditorPauseLayer)
 
 		log::debug("Processing editor option of ID {}...", nodeID.c_str());
 
-		auto validation = EditorEnum::editorOptionName[nodeID];
+		auto validation = EditorEnum::optionName[nodeID];
 
 		if (validation.empty())
 		{
@@ -304,7 +339,7 @@ class $modify(EditorPause, EditorPauseLayer)
 
 	void initiateAction(std::string actionID, CCObject * sender)
 	{
-		auto validate = EditorEnum::editorActionName[actionID];
+		auto validate = EditorEnum::actionName[actionID];
 
 		if (validate.empty())
 		{
@@ -314,39 +349,39 @@ class $modify(EditorPause, EditorPauseLayer)
 		{
 			log::debug("Initiating editor action of ID {}...", actionID);
 
-			if (actionID == EditorEnum::editorActionNode[EditorEnum::EditorAction::BuildHelper])
+			if (actionID == EditorEnum::actionNode[EditorEnum::Action::BuildHelper])
 			{
 				EditorPauseLayer::onBuildHelper(sender);
 				// }
-				// else if (actionID == EditorEnum::editorActionNode[EditorEnum::EditorAction::CopyColorPlus])
+				// else if (actionID == EditorEnum::actionNode[EditorEnum::Action::CopyColorPlus])
 				// {
 				// 	EditorPauseLayer::onCopyWColor(sender);
 				// }
-				// else if (actionID == EditorEnum::editorActionNode[EditorEnum::EditorAction::PasteColorPlus])
+				// else if (actionID == EditorEnum::actionNode[EditorEnum::Action::PasteColorPlus])
 				// {
 				// 	EditorPauseLayer::onPasteWColor(sender);
 			}
-			else if (actionID == EditorEnum::editorActionNode[EditorEnum::EditorAction::CreateExtras])
+			else if (actionID == EditorEnum::actionNode[EditorEnum::Action::CreateExtras])
 			{
 				EditorPauseLayer::onCreateExtras(sender);
 				// }
-				// else if (actionID == EditorEnum::editorActionNode[EditorEnum::EditorAction::UnlockLayers])
+				// else if (actionID == EditorEnum::actionNode[EditorEnum::Action::UnlockLayers])
 				// {
 				// 	EditorPauseLayer::onUnlockAllLayers(sender);
 				// }
-				// else if (actionID == EditorEnum::editorActionNode[EditorEnum::EditorAction::ResetUnused])
+				// else if (actionID == EditorEnum::actionNode[EditorEnum::Action::ResetUnused])
 				// {
 				// 	EditorPauseLayer::doResetUnused(sender);
 				// }
-				// else if (actionID == EditorEnum::editorActionNode[EditorEnum::EditorAction::CreateLoop])
+				// else if (actionID == EditorEnum::actionNode[EditorEnum::Action::CreateLoop])
 				// {
 				// 	EditorPauseLayer::onCreateLoop(sender);
 				// }
-				// else if (actionID == EditorEnum::editorActionNode[EditorEnum::EditorAction::UncheckPortals])
+				// else if (actionID == EditorEnum::actionNode[EditorEnum::Action::UncheckPortals])
 				// {
 				// 	EditorPauseLayer::uncheckAllPortals(sender);
 				// }
-				// else if (actionID == EditorEnum::editorActionNode[EditorEnum::EditorAction::Keys])
+				// else if (actionID == EditorEnum::actionNode[EditorEnum::Action::Keys])
 				// {
 				// 	EditorPauseLayer::onKeybindings(sender);
 			};
@@ -358,7 +393,7 @@ class $modify(EditorPause, EditorPauseLayer)
 		auto nodeObject = as<CCNode *>(sender);
 		auto togglerObject = as<CCMenuItemToggler *>(nodeObject);
 
-		auto validate = EditorEnum::editorActionName[optionID];
+		auto validate = EditorEnum::actionName[optionID];
 
 		if (validate.empty())
 		{
@@ -369,7 +404,7 @@ class $modify(EditorPause, EditorPauseLayer)
 			log::debug("Toggling editor option of ID {}...", optionID);
 
 			m_editorLayer->updateEditorMode();
-			togglerObject->toggle(gm->getGameVariable(EditorEnum::editorOptionVar[nodeObject->getID()].c_str()));
+			togglerObject->toggle(gm->getGameVariable(EditorEnum::optionVar[nodeObject->getID()].c_str()));
 		};
 	};
 };
