@@ -11,6 +11,8 @@
 using namespace geode::prelude;
 
 auto getThisMod = geode::getMod();
+auto getThisLoader = geode::Loader::get();
+
 auto gm = GameManager::get();
 auto winSize = CCDirector::sharedDirector()->getWinSize();
 
@@ -525,6 +527,18 @@ class $modify(EditorPause, EditorPauseLayer)
 
 			// Add Title to the Toggles Menu
 			newTogglesMenu->addChild(OptionTitle);
+
+			bool isBetterEditLoaded = getThisLoader->isModLoaded("hjfod.betteredit");
+
+			if (isBetterEditLoaded)
+			{
+				auto supportBeButton = this->getChildByIDRecursive("hjfod.betteredit/support-be-btn");
+
+				if (supportBeButton)
+				{
+					supportBeButton->setVisible(false);
+				};
+			};
 
 			return true;
 		}
