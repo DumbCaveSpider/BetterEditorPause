@@ -60,16 +60,17 @@ class $modify(EditorPause, EditorPauseLayer)
 			newActionsMenu_sprite->setZOrder(0);
 
 			AxisLayout *newActionsMenu_layout = AxisLayout::create(Axis::Row);
-			newActionsMenu_layout->setGap(30.f);
+			newActionsMenu_layout->setGap(0.f);
 			newActionsMenu_layout->setAutoScale(true);
 			newActionsMenu_layout->setGrowCrossAxis(true);
-			newActionsMenu_layout->setCrossAxisOverflow(true);
+			newActionsMenu_layout->setCrossAxisOverflow(false);
 			newActionsMenu_layout->setAxisAlignment(AxisAlignment::Even);
 			newActionsMenu_layout->setCrossAxisAlignment(AxisAlignment::Even);
 			newActionsMenu_layout->setCrossAxisLineAlignment(AxisAlignment::Even);
 			newActionsMenu_layout->ignoreInvisibleChildren(true);
 
 			AxisLayoutOptions *newActionsMenu_layoutOptions = AxisLayoutOptions::create();
+			newActionsMenu_layoutOptions->setAutoScale(false);
 
 			newActionsMenu->setLayout(newActionsMenu_layout, true, false);
 			newActionsMenu->setLayoutOptions(newActionsMenu_layoutOptions, true);
@@ -100,6 +101,7 @@ class $modify(EditorPause, EditorPauseLayer)
 			newTogglesMenu_layout->ignoreInvisibleChildren(true);
 
 			AxisLayoutOptions *newTogglesMenu_layoutOptions = AxisLayoutOptions::create();
+			newTogglesMenu_layoutOptions->setAutoScale(true);
 
 			newTogglesMenu->setLayout(newTogglesMenu_layout, true, false);
 			newTogglesMenu->setLayoutOptions(newTogglesMenu_layoutOptions, true);
@@ -195,7 +197,6 @@ class $modify(EditorPause, EditorPauseLayer)
 						menu_selector(EditorPause::onOption)); // this isnt right btw // well this is :]
 					toggle->setID(pair.second);
 					toggle->setZOrder(1);
-					toggle->setScale(0.375);
 					toggle->toggle(isToggled);
 
 					newTogglesMenu->addChild(toggle);
