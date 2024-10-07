@@ -22,16 +22,17 @@ std::map<EditorEnum::EditorAction, std::string> EditorEnum::editorActionNode{
     {EditorEnum::EditorAction::ResetUnused, "reset-unused"_spr},
     {EditorEnum::EditorAction::CreateLoop, "create-loop"_spr},
     {EditorEnum::EditorAction::UncheckPortals, "uncheck-portals"_spr},
+
     {EditorEnum::EditorAction::Keys, "keybinds"_spr},
 
     {EditorEnum::EditorAction::Regroup, "regroup"_spr},
     {EditorEnum::EditorAction::ResetScroll, "reset-scroll"_spr},
     {EditorEnum::EditorAction::SelectAll, "select-all"_spr},
     {EditorEnum::EditorAction::AlignX, "align-x"_spr},
-    {EditorEnum::EditorAction::AlignY, "align-y"_spr},
     {EditorEnum::EditorAction::NewGroupX, "new-group-x"_spr},
-    {EditorEnum::EditorAction::NewGroupY, "new-group-y"_spr},
     {EditorEnum::EditorAction::SelectAllLeft, "select-all-left"_spr},
+    {EditorEnum::EditorAction::AlignY, "align-y"_spr},
+    {EditorEnum::EditorAction::NewGroupY, "new-group-y"_spr},
     {EditorEnum::EditorAction::SelectAllRight, "select-all-right"_spr}};
 
 std::map<std::string, std::string> EditorEnum::editorActionName{
@@ -43,16 +44,17 @@ std::map<std::string, std::string> EditorEnum::editorActionName{
     {EditorEnum::editorActionNode[EditorEnum::EditorAction::ResetUnused], "Reset Unused"},
     {EditorEnum::editorActionNode[EditorEnum::EditorAction::CreateLoop], "Create Loop"},
     {EditorEnum::editorActionNode[EditorEnum::EditorAction::UncheckPortals], "Uncheck Portals"},
+
     {EditorEnum::editorActionNode[EditorEnum::EditorAction::Keys], "Keybind Viewer"},
 
     {EditorEnum::editorActionNode[EditorEnum::EditorAction::Regroup], "Regroup"},
     {EditorEnum::editorActionNode[EditorEnum::EditorAction::ResetScroll], "Reset Scroll"},
     {EditorEnum::editorActionNode[EditorEnum::EditorAction::SelectAll], "Select All"},
     {EditorEnum::editorActionNode[EditorEnum::EditorAction::AlignX], "Align X"},
-    {EditorEnum::editorActionNode[EditorEnum::EditorAction::AlignY], "Align Y"},
     {EditorEnum::editorActionNode[EditorEnum::EditorAction::NewGroupX], "New Group X"},
-    {EditorEnum::editorActionNode[EditorEnum::EditorAction::NewGroupY], "New Group Y"},
     {EditorEnum::editorActionNode[EditorEnum::EditorAction::SelectAllLeft], "Select All Left"},
+    {EditorEnum::editorActionNode[EditorEnum::EditorAction::AlignY], "Align Y"},
+    {EditorEnum::editorActionNode[EditorEnum::EditorAction::NewGroupY], "New Group Y"},
     {EditorEnum::editorActionNode[EditorEnum::EditorAction::SelectAllRight], "Select All Right"}};
 
 std::map<std::string, std::string> EditorEnum::editorActionIcon{
@@ -64,16 +66,17 @@ std::map<std::string, std::string> EditorEnum::editorActionIcon{
     {EditorEnum::editorActionNode[EditorEnum::EditorAction::ResetUnused], "a_resetUnused.png"_spr},
     {EditorEnum::editorActionNode[EditorEnum::EditorAction::CreateLoop], "a_createLoop.png"_spr},
     {EditorEnum::editorActionNode[EditorEnum::EditorAction::UncheckPortals], "a_uncheckPortals.png"_spr},
+
     {EditorEnum::editorActionNode[EditorEnum::EditorAction::Keys], "a_keys.png"_spr},
 
     {EditorEnum::editorActionNode[EditorEnum::EditorAction::Regroup], "as_regroup.png"_spr},
     {EditorEnum::editorActionNode[EditorEnum::EditorAction::ResetScroll], "as_resetScroll.png"_spr},
     {EditorEnum::editorActionNode[EditorEnum::EditorAction::SelectAll], "as_selectAll.png"_spr},
     {EditorEnum::editorActionNode[EditorEnum::EditorAction::AlignX], "as_alignX.png"_spr},
-    {EditorEnum::editorActionNode[EditorEnum::EditorAction::AlignY], "as_alignY.png"_spr},
     {EditorEnum::editorActionNode[EditorEnum::EditorAction::NewGroupX], "as_newGroupX.png"_spr},
-    {EditorEnum::editorActionNode[EditorEnum::EditorAction::NewGroupY], "as_newGroupY.png"_spr},
     {EditorEnum::editorActionNode[EditorEnum::EditorAction::SelectAllLeft], "as_selectAllLeft.png"_spr},
+    {EditorEnum::editorActionNode[EditorEnum::EditorAction::AlignY], "as_alignY.png"_spr},
+    {EditorEnum::editorActionNode[EditorEnum::EditorAction::NewGroupY], "as_newGroupY.png"_spr},
     {EditorEnum::editorActionNode[EditorEnum::EditorAction::SelectAllRight], "as_selectAllRight.png"_spr}};
 
 /*

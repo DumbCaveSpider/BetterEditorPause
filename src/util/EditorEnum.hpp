@@ -30,10 +30,10 @@ public:
         ResetScroll = 11,
         SelectAll = 12,
         AlignX = 13,
-        AlignY = 14,
-        NewGroupX = 15,
-        NewGroupY = 16,
-        SelectAllLeft = 17,
+        NewGroupX = 14,
+        SelectAllLeft = 15,
+        AlignY = 16,
+        NewGroupY = 17,
         SelectAllRight = 18
     };
 
