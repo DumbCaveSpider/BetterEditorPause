@@ -428,10 +428,26 @@ class $modify(EditorPause, EditorPauseLayer)
 			// TOGGLE TAB //////////////////////////////////////////////////////////////////////////////////////
 
 			// Options Title
-			auto OptionTitle = CCLabelBMFont::create("Options", "goldFont.fnt");
-			OptionTitle->setScale(0.8);
+			auto OptionTitle = CCLabelBMFont::create("Togglable Options", "goldFont.fnt");
+			OptionTitle->setScale(0.5);
 			OptionTitle->setPosition({newTogglesMenu->getContentWidth() / 2.f, newTogglesMenu->getContentHeight() - 15.f});
 			OptionTitle->ignoreAnchorPointForPosition(false);
+
+			// Preview Mode Button
+			bool isPreviewMode = GameManager::get()->getGameVariable("0036");
+
+			  auto togglePreviewMode = CCMenuItemToggler::create(
+				CCSprite::create("t_previewModeOff.png"_spr),
+				CCSprite::create("t_previewModeOn.png"_spr),
+				this, menu_selector(EditorPauseLayer::togglePreviewAnim)); // this isnt right btw
+
+			togglePreviewMode->setZOrder(1);
+			togglePreviewMode->setScale(0.6);
+			togglePreviewMode->setPosition({newTogglesMenu->getContentWidth() / 2.f, newTogglesMenu->getContentHeight() - 40.f});
+			togglePreviewMode->ignoreAnchorPointForPosition(false);
+
+			// Add Toggles to Toggles Menu
+			newTogglesMenu->addChild(togglePreviewMode);
 
 			// Add Button to Action menu
 			newActionsMenu->addChild(BuildHelper);
