@@ -8,6 +8,7 @@
 
 #include <Geode/binding/EditorPauseLayer.hpp>
 #include <Geode/binding/LevelEditorLayer.hpp>
+#include <Geode/binding/GameManager.hpp>
 
 using namespace geode::prelude;
 
@@ -38,12 +39,14 @@ class $modify(EditorPause, EditorPauseLayer)
 			auto settingsMenu = this->getChildByID("settings-menu");
 			auto infoMenu = this->getChildByID("info-menu");
 			auto resumeMenu = this->getChildByID("resume-menu");
+			auto guidelinesMenu = this->getChildByID("guidelines-menu");
 
 			actionsMenu->removeMeAndCleanup();
 			smallActionsMenu->removeMeAndCleanup();
 			togglesMenu->removeMeAndCleanup();
 			settingsMenu->removeMeAndCleanup();
 			resumeMenu->removeMeAndCleanup();
+			infoMenu->removeMeAndCleanup();
 
 			// newActionsMenu menu
 			auto newActionsMenu = CCMenu::create();
@@ -111,16 +114,37 @@ class $modify(EditorPause, EditorPauseLayer)
 			auto newResumeMenu = CCMenu::create();
 			newResumeMenu->setID("resume_menu"_spr);
 			newResumeMenu->ignoreAnchorPointForPosition(false);
-			newResumeMenu->setScaledContentSize({200.f, 220.f});
-			newResumeMenu->setPosition({this->getContentWidth() / 2.f, 160.f});
+			newResumeMenu->setScaledContentSize({200.f, 200.f});
+			newResumeMenu->setPosition({this->getContentWidth() / 2.f, 170.f});
 
-			// infoMenu background
-			CCScale9Sprite *infoMenuSprite = CCScale9Sprite::create("square02b_001.png");
-			infoMenuSprite->ignoreAnchorPointForPosition(false);
-			infoMenuSprite->setScaledContentSize(infoMenu->getScaledContentSize());
-			infoMenuSprite->setAnchorPoint({0.0, 0.0});
-			infoMenuSprite->setOpacity(150);
-			infoMenuSprite->setColor(ccColor3B(0, 0, 0));
+			// newinfoMenu background
+			CCScale9Sprite *newTimeMenu_sprite = CCScale9Sprite::create("square02b_001.png");
+			newTimeMenu_sprite->setID("time-menu"_spr);
+			newTimeMenu_sprite->ignoreAnchorPointForPosition(false);
+			newTimeMenu_sprite->setScaledContentSize({220.f, 100.f});
+			newTimeMenu_sprite->setPosition({this->getContentWidth() / 2.f, 320.f});
+			newTimeMenu_sprite->setOpacity(150);
+			newTimeMenu_sprite->setColor(ccColor3B(0, 0, 0));
+			newTimeMenu_sprite->setZOrder(0);
+
+			// move guidelines menu
+			guidelinesMenu->setPosition({this->getContentWidth() / 2.f, 60.f});
+
+			// idk why geode doesnt have a freaking way to get the value of the object count, sfx and songs individually
+			auto objectCount = as<CCLabelBMFont*>(infoMenu->getChildByID("object-count-label"))->getString();
+			auto lenghtLabel = as<CCLabelBMFont*>(infoMenu->getChildByID("length-label"))->getString();
+			auto lenghtNameLabel = as<CCLabelBMFont*>(infoMenu->getChildByID("length-name-label"))->getString();
+
+			// TIME TAB //////////////////////////////////////////////////////////////////////////////////////
+
+			// Should be the time spent on editor but this is just a test. Should use Timeul
+			auto ObjectCount = CCLabelBMFont::create(CCString::createWithFormat("Objects: %i", LevelEditorLayer::get()->m_objectCount)->getCString(), "bigFont.fnt"); // what object count? am i stupid?
+			ObjectCount->setScale(0.3);
+			ObjectCount->setPosition({newTimeMenu_sprite->getContentWidth() / 2, newTimeMenu_sprite->getContentHeight() - 80.f});
+			ObjectCount->ignoreAnchorPointForPosition(false);
+			ObjectCount->setZOrder(1);
+
+			newTimeMenu_sprite->addChild(ObjectCount);
 
 			// ACTION TAB //////////////////////////////////////////////////////////////////////////////////////
 
@@ -234,7 +258,7 @@ class $modify(EditorPause, EditorPauseLayer)
 				menu_selector(EditorPauseLayer::onSaveAndPlay));
 
 			saveAndPlay_Button->setZOrder(1);
-			saveAndPlay_Button->setPosition({newResumeMenu->getContentWidth() / 2.f, newResumeMenu->getContentHeight() - 70.f});
+			saveAndPlay_Button->setPosition({newResumeMenu->getContentWidth() / 2.f, newResumeMenu->getContentHeight() - 65.f});
 			saveAndPlay_Button->ignoreAnchorPointForPosition(false);
 
 			// saveAndExit Button
@@ -248,7 +272,7 @@ class $modify(EditorPause, EditorPauseLayer)
 				menu_selector(EditorPauseLayer::onSaveAndExit));
 
 			saveAndExit_Button->setZOrder(1);
-			saveAndExit_Button->setPosition({newResumeMenu->getContentWidth() / 2.f, newResumeMenu->getContentHeight() - 110.f});
+			saveAndExit_Button->setPosition({newResumeMenu->getContentWidth() / 2.f, newResumeMenu->getContentHeight() - 100.f});
 			saveAndExit_Button->ignoreAnchorPointForPosition(false);
 
 			// Save Button
@@ -262,7 +286,7 @@ class $modify(EditorPause, EditorPauseLayer)
 				menu_selector(EditorPauseLayer::onSave));
 
 			Save_Button->setZOrder(1);
-			Save_Button->setPosition({newResumeMenu->getContentWidth() / 2.f, newResumeMenu->getContentHeight() - 150.f});
+			Save_Button->setPosition({newResumeMenu->getContentWidth() / 2.f, newResumeMenu->getContentHeight() - 135.f});
 			Save_Button->ignoreAnchorPointForPosition(false);
 
 			// Exit Without Save Button
@@ -276,7 +300,7 @@ class $modify(EditorPause, EditorPauseLayer)
 				menu_selector(EditorPauseLayer::onExitNoSave));
 
 			exitWithoutSave_Button->setZOrder(1);
-			exitWithoutSave_Button->setPosition({newResumeMenu->getContentWidth() / 2.f, newResumeMenu->getContentHeight() - 190.f});
+			exitWithoutSave_Button->setPosition({newResumeMenu->getContentWidth() / 2.f, newResumeMenu->getContentHeight() - 170.f});
 			exitWithoutSave_Button->ignoreAnchorPointForPosition(false);
 
 			// Add Buttons to Resume Menu
@@ -303,7 +327,7 @@ class $modify(EditorPause, EditorPauseLayer)
 
 			this->addChild(newActionsMenu_sprite);
 			this->addChild(newTogglesMenu_sprite);
-			infoMenu->addChild(infoMenuSprite);
+			this->addChild(newTimeMenu_sprite);
 
 			// Add Title to the Action Menu
 			newActionsMenu_sprite->addChild(ActionTitle);
