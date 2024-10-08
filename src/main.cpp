@@ -43,7 +43,7 @@ class $modify(EditorPause, EditorPauseLayer)
 			smallActionsMenu->removeMeAndCleanup();
 			togglesMenu->removeMeAndCleanup();
 			settingsMenu->removeMeAndCleanup();
-			// resumeMenu->removeMeAndCleanup();
+			resumeMenu->removeMeAndCleanup();
 
 			// newActionsMenu menu
 			auto newActionsMenu = CCMenu::create();
@@ -209,25 +209,82 @@ class $modify(EditorPause, EditorPauseLayer)
 
 			// RESUME BUTTON //////////////////////////////////////////////////////////////////////////////////////
 
-			// Resume Button (pls fix this, it kept crashing the game and it does no logs)
-			/*
-			auto resumeButton_Sprite = CCSprite::create("r_resumeToEditor.png"_spr);
-			resumeButton_Sprite->setScale(0.75);
+			// Resume Button
 
-			auto resumeButton = CCMenuItemSpriteExtra::create(
-				resumeButton_Sprite,
+			auto resume_Sprite = CCSprite::create("r_resumeToEditor.png"_spr);
+			resume_Sprite->setScale(0.8);
+
+			auto resume_Button = CCMenuItemSpriteExtra::create(
+				resume_Sprite,
 				this,
-				menu_selector(EditorPause::onNewToggles));
+				menu_selector(EditorPauseLayer::onResume));
 
-			resumeButton_Sprite->addChild(resumeButton);
+			resume_Button->setZOrder(1);
+			resume_Button->setPosition({newResumeMenu->getContentWidth() / 2.f, newResumeMenu->getContentHeight() - 30.f});
+			resume_Button->ignoreAnchorPointForPosition(false);
 
-			resumeButton->setZOrder(1);
-			resumeButton->setPosition({newResumeMenu->getContentWidth() / 2.f, newResumeMenu->getContentHeight()});
-			resumeButton->ignoreAnchorPointForPosition(false);
+			// saveAndPlay Button
+
+			auto saveAndPlay_Sprite = CCSprite::create("r_saveAndPlay.png"_spr);
+			saveAndPlay_Sprite->setScale(0.8);
+
+			auto saveAndPlay_Button = CCMenuItemSpriteExtra::create(
+				saveAndPlay_Sprite,
+				this,
+				menu_selector(EditorPauseLayer::onSaveAndPlay));
+
+			saveAndPlay_Button->setZOrder(1);
+			saveAndPlay_Button->setPosition({newResumeMenu->getContentWidth() / 2.f, newResumeMenu->getContentHeight() - 70.f});
+			saveAndPlay_Button->ignoreAnchorPointForPosition(false);
+
+			// saveAndExit Button
+
+			auto saveAndExit_Sprite = CCSprite::create("r_saveAndExit.png"_spr);
+			saveAndExit_Sprite->setScale(0.8);
+
+			auto saveAndExit_Button = CCMenuItemSpriteExtra::create(
+				saveAndExit_Sprite,
+				this,
+				menu_selector(EditorPauseLayer::onSaveAndExit));
+
+			saveAndExit_Button->setZOrder(1);
+			saveAndExit_Button->setPosition({newResumeMenu->getContentWidth() / 2.f, newResumeMenu->getContentHeight() - 110.f});
+			saveAndExit_Button->ignoreAnchorPointForPosition(false);
+
+			// Save Button
+
+			auto Save_Sprite = CCSprite::create("r_saveLevel.png"_spr);
+			Save_Sprite->setScale(0.8);
+
+			auto Save_Button = CCMenuItemSpriteExtra::create(
+				Save_Sprite,
+				this,
+				menu_selector(EditorPauseLayer::onSave));
+
+			Save_Button->setZOrder(1);
+			Save_Button->setPosition({newResumeMenu->getContentWidth() / 2.f, newResumeMenu->getContentHeight() - 150.f});
+			Save_Button->ignoreAnchorPointForPosition(false);
+
+			// Exit Without Save Button
+
+			auto exitWithoutSave_Sprite = CCSprite::create("r_exitWithoutSave.png"_spr);
+			exitWithoutSave_Sprite->setScale(0.8);
+
+			auto exitWithoutSave_Button = CCMenuItemSpriteExtra::create(
+				exitWithoutSave_Sprite,
+				this,
+				menu_selector(EditorPauseLayer::onExitNoSave));
+
+			exitWithoutSave_Button->setZOrder(1);
+			exitWithoutSave_Button->setPosition({newResumeMenu->getContentWidth() / 2.f, newResumeMenu->getContentHeight() - 190.f});
+			exitWithoutSave_Button->ignoreAnchorPointForPosition(false);
 
 			// Add Buttons to Resume Menu
-			newResumeMenu->addChild(resumeButton);
-			*/
+			newResumeMenu->addChild(resume_Button);
+			newResumeMenu->addChild(saveAndPlay_Button);
+			newResumeMenu->addChild(saveAndExit_Button);
+			newResumeMenu->addChild(Save_Button);
+			newResumeMenu->addChild(exitWithoutSave_Button);
 
 			newActionsMenu->setContentWidth(newActionsMenu_sprite->getContentWidth());
 			newActionsMenu->setPosition({newActionsMenu_sprite->getContentWidth() / 2, newActionsMenu_sprite->getContentHeight() * 0.45f});
@@ -405,7 +462,6 @@ class $modify(EditorPause, EditorPauseLayer)
 		{
 			log::debug("Toggling editor option of ID {}...", optionID);
 
-			m_editorLayer->updateEditorMode();
 			togglerObject->toggle(gm->getGameVariable(EditorEnum::optionVar[nodeObject->getID()].c_str()));
 		};
 	};
