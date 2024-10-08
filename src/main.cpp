@@ -131,9 +131,9 @@ class $modify(EditorPause, EditorPauseLayer)
 			guidelinesMenu->setPosition({this->getContentWidth() / 2.f, 60.f});
 
 			// idk why geode doesnt have a freaking way to get the value of the object count, sfx and songs individually
-			auto objectCount = as<CCLabelBMFont*>(infoMenu->getChildByID("object-count-label"))->getString();
-			auto lenghtLabel = as<CCLabelBMFont*>(infoMenu->getChildByID("length-label"))->getString();
-			auto lenghtNameLabel = as<CCLabelBMFont*>(infoMenu->getChildByID("length-name-label"))->getString();
+			auto objectCount = as<CCLabelBMFont *>(infoMenu->getChildByID("object-count-label"));
+			auto lengthLabel = as<CCLabelBMFont *>(infoMenu->getChildByID("length-label"));
+			auto lengthNameLabel = as<CCLabelBMFont *>(infoMenu->getChildByID("length-name-label"));
 
 			// TIME TAB //////////////////////////////////////////////////////////////////////////////////////
 
@@ -151,7 +151,7 @@ class $modify(EditorPause, EditorPauseLayer)
 			// Action Title
 			auto ActionTitle = CCLabelBMFont::create("Creator Actions", "goldFont.fnt");
 			ActionTitle->setScale(0.625);
-			ActionTitle->setPosition({newActionsMenu_sprite->getContentWidth() / 2, newActionsMenu_sprite->getContentHeight() - 20.f});
+			ActionTitle->setPosition({newActionsMenu_sprite->getContentWidth() / 2, newActionsMenu_sprite->getContentHeight() - 18.75f});
 			ActionTitle->ignoreAnchorPointForPosition(false);
 			ActionTitle->setZOrder(1);
 
@@ -197,7 +197,7 @@ class $modify(EditorPause, EditorPauseLayer)
 			// Options Title
 			auto OptionTitle = CCLabelBMFont::create("Editor Options", "goldFont.fnt");
 			OptionTitle->setScale(0.625);
-			OptionTitle->setPosition({newTogglesMenu_sprite->getContentWidth() / 2.f, newTogglesMenu_sprite->getContentHeight() - 20.f});
+			OptionTitle->setPosition({newTogglesMenu_sprite->getContentWidth() / 2.f, newTogglesMenu_sprite->getContentHeight() - 18.75f});
 			OptionTitle->ignoreAnchorPointForPosition(false);
 
 			// All Option Buttons //////////////////////////////////////////////////////////////////////////////////////
@@ -311,13 +311,13 @@ class $modify(EditorPause, EditorPauseLayer)
 			newResumeMenu->addChild(exitWithoutSave_Button);
 
 			newActionsMenu->setContentWidth(newActionsMenu_sprite->getContentWidth());
-			newActionsMenu->setPosition({newActionsMenu_sprite->getContentWidth() / 2, newActionsMenu_sprite->getContentHeight() * 0.45f});
-			newActionsMenu->setScale(0.75);
+			newActionsMenu->setPosition({newActionsMenu_sprite->getContentWidth() / 2, newActionsMenu_sprite->getContentHeight() * 0.475f});
+			newActionsMenu->setScale(0.825);
 			newActionsMenu->updateLayout(true);
 
 			newTogglesMenu->setContentWidth(newTogglesMenu_sprite->getContentWidth());
-			newTogglesMenu->setPosition({newTogglesMenu_sprite->getContentWidth() / 2, newTogglesMenu_sprite->getContentHeight() * 0.45f});
-			newTogglesMenu->setScale(0.75);
+			newTogglesMenu->setPosition({newTogglesMenu_sprite->getContentWidth() / 2, newTogglesMenu_sprite->getContentHeight() * 0.475f});
+			newTogglesMenu->setScale(0.8);
 			newTogglesMenu->updateLayout(true);
 
 			// Add Menu into the Editor Pause Layer
@@ -434,39 +434,39 @@ class $modify(EditorPause, EditorPauseLayer)
 
 			if (actionID == EditorEnum::actionNode[EditorEnum::Action::BuildHelper])
 			{
-				EditorPauseLayer::onBuildHelper(sender);
+				this->onBuildHelper(sender);
 				// }
 				// else if (actionID == EditorEnum::actionNode[EditorEnum::Action::CopyColorPlus])
 				// {
-				// 	EditorPauseLayer::onCopyWColor(sender);
+				// 	this->onCopyWColor(sender);
 				// }
 				// else if (actionID == EditorEnum::actionNode[EditorEnum::Action::PasteColorPlus])
 				// {
-				// 	EditorPauseLayer::onPasteWColor(sender);
+				// 	this->onPasteWColor(sender);
 			}
 			else if (actionID == EditorEnum::actionNode[EditorEnum::Action::CreateExtras])
 			{
-				EditorPauseLayer::onCreateExtras(sender);
+				this->onCreateExtras(sender);
 				// }
 				// else if (actionID == EditorEnum::actionNode[EditorEnum::Action::UnlockLayers])
 				// {
-				// 	EditorPauseLayer::onUnlockAllLayers(sender);
+				// 	this->onUnlockAllLayers(sender);
 				// }
 				// else if (actionID == EditorEnum::actionNode[EditorEnum::Action::ResetUnused])
 				// {
-				// 	EditorPauseLayer::doResetUnused(sender);
+				// 	this->doResetUnused(sender);
 				// }
 				// else if (actionID == EditorEnum::actionNode[EditorEnum::Action::CreateLoop])
 				// {
-				// 	EditorPauseLayer::onCreateLoop(sender);
+				// 	this->onCreateLoop(sender);
 				// }
 				// else if (actionID == EditorEnum::actionNode[EditorEnum::Action::UncheckPortals])
 				// {
-				// 	EditorPauseLayer::uncheckAllPortals(sender);
+				// 	this->uncheckAllPortals(sender);
 				// }
 				// else if (actionID == EditorEnum::actionNode[EditorEnum::Action::Keys])
 				// {
-				// 	EditorPauseLayer::onKeybindings(sender);
+				// 	this->onKeybindings(sender);
 			};
 		};
 	};
