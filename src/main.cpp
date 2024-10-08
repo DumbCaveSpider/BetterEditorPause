@@ -7,6 +7,7 @@
 #include <Geode/modify/EditorPauseLayer.hpp>
 
 #include <Geode/binding/EditorPauseLayer.hpp>
+#include <Geode/binding/LevelEditorLayer.hpp>
 
 using namespace geode::prelude;
 

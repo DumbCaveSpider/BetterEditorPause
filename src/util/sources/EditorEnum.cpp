@@ -111,29 +111,29 @@ std::map<std::string, std::string> EditorEnum::optionName{
 
 std::map<std::string, std::string> EditorEnum::optionSpriteEnabled{
     {EditorEnum::optionNode[EditorEnum::Option::PreviewMode], "t_previewModeOn.png"_spr},
-    {EditorEnum::optionNode[EditorEnum::Option::PreviewAnimations], "t_previewModeOn.png"_spr},
-    {EditorEnum::optionNode[EditorEnum::Option::PreviewParticles], "t_previewModeOn.png"_spr},
-    {EditorEnum::optionNode[EditorEnum::Option::PreviewShaders], "t_previewModeOn.png"_spr},
-    {EditorEnum::optionNode[EditorEnum::Option::ShowHitboxes], "t_previewModeOn.png"_spr},
-    {EditorEnum::optionNode[EditorEnum::Option::HideInvisible], "t_previewModeOn.png"_spr},
-    {EditorEnum::optionNode[EditorEnum::Option::ShowGround], "t_previewModeOn.png"_spr},
-    {EditorEnum::optionNode[EditorEnum::Option::ShowObjectInfo], "t_previewModeOn.png"_spr},
-    {EditorEnum::optionNode[EditorEnum::Option::ShowGrid], "t_previewModeOn.png"_spr},
-    {EditorEnum::optionNode[EditorEnum::Option::SelectFilter], "t_previewModeOn.png"_spr},
-    {EditorEnum::optionNode[EditorEnum::Option::IgnoreDamage], "t_previewModeOn.png"_spr}};
+    {EditorEnum::optionNode[EditorEnum::Option::PreviewAnimations], "t_previewAnimationsOn.png"_spr},
+    {EditorEnum::optionNode[EditorEnum::Option::PreviewParticles], "t_previewParticlesOn.png"_spr},
+    {EditorEnum::optionNode[EditorEnum::Option::PreviewShaders], "t_previewShadersOn.png"_spr},
+    {EditorEnum::optionNode[EditorEnum::Option::ShowHitboxes], "t_showHitboxesOn.png"_spr},
+    {EditorEnum::optionNode[EditorEnum::Option::HideInvisible], "t_hideInvisibleOn.png"_spr},
+    {EditorEnum::optionNode[EditorEnum::Option::ShowGround], "t_showGroundOn.png"_spr},
+    {EditorEnum::optionNode[EditorEnum::Option::ShowObjectInfo], "t_showObjectInfoOn.png"_spr},
+    {EditorEnum::optionNode[EditorEnum::Option::ShowGrid], "t_showGridOn.png"_spr},
+    {EditorEnum::optionNode[EditorEnum::Option::SelectFilter], "t_selectFilterOn.png"_spr},
+    {EditorEnum::optionNode[EditorEnum::Option::IgnoreDamage], "t_ignoreDamageOn.png"_spr}};
 
 std::map<std::string, std::string> EditorEnum::optionSpriteDisabled{
     {EditorEnum::optionNode[EditorEnum::Option::PreviewMode], "t_previewModeOff.png"_spr},
-    {EditorEnum::optionNode[EditorEnum::Option::PreviewAnimations], "t_previewModeOff.png"_spr},
-    {EditorEnum::optionNode[EditorEnum::Option::PreviewParticles], "t_previewModeOff.png"_spr},
-    {EditorEnum::optionNode[EditorEnum::Option::PreviewShaders], "t_previewModeOff.png"_spr},
-    {EditorEnum::optionNode[EditorEnum::Option::ShowHitboxes], "t_previewModeOff.png"_spr},
-    {EditorEnum::optionNode[EditorEnum::Option::HideInvisible], "t_previewModeOff.png"_spr},
-    {EditorEnum::optionNode[EditorEnum::Option::ShowGround], "t_previewModeOff.png"_spr},
-    {EditorEnum::optionNode[EditorEnum::Option::ShowObjectInfo], "t_previewModeOff.png"_spr},
-    {EditorEnum::optionNode[EditorEnum::Option::ShowGrid], "t_previewModeOff.png"_spr},
-    {EditorEnum::optionNode[EditorEnum::Option::SelectFilter], "t_previewModeOff.png"_spr},
-    {EditorEnum::optionNode[EditorEnum::Option::IgnoreDamage], "t_previewModeOff.png"_spr}};
+    {EditorEnum::optionNode[EditorEnum::Option::PreviewAnimations], "t_previewAnimationsOff.png"_spr},
+    {EditorEnum::optionNode[EditorEnum::Option::PreviewParticles], "t_previewParticlesOff.png"_spr},
+    {EditorEnum::optionNode[EditorEnum::Option::PreviewShaders], "t_previewShadersOff.png"_spr},
+    {EditorEnum::optionNode[EditorEnum::Option::ShowHitboxes], "t_showHitboxesOff.png"_spr},
+    {EditorEnum::optionNode[EditorEnum::Option::HideInvisible], "t_hideInvisibleOff.png"_spr},
+    {EditorEnum::optionNode[EditorEnum::Option::ShowGround], "t_showGroundOff.png"_spr},
+    {EditorEnum::optionNode[EditorEnum::Option::ShowObjectInfo], "t_showObjectInfoOff.png"_spr},
+    {EditorEnum::optionNode[EditorEnum::Option::ShowGrid], "t_showGridOff.png"_spr},
+    {EditorEnum::optionNode[EditorEnum::Option::SelectFilter], "t_selectFilterOff.png"_spr},
+    {EditorEnum::optionNode[EditorEnum::Option::IgnoreDamage], "t_ignoreDamageOff.png"_spr}};
 
 std::map<std::string, std::string> EditorEnum::optionVar{
     {EditorEnum::optionNode[EditorEnum::Option::PreviewMode], "0036"},
