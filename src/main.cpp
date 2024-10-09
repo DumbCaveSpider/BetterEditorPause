@@ -466,38 +466,74 @@ class $modify(EditorPause, EditorPauseLayer)
 			if (actionID == EditorEnum::actionNode[EditorEnum::Action::BuildHelper])
 			{
 				this->onBuildHelper(sender);
-				// }
-				// else if (actionID == EditorEnum::actionNode[EditorEnum::Action::CopyColorPlus])
-				// {
-				// 	this->onCopyWColor(sender);
-				// }
-				// else if (actionID == EditorEnum::actionNode[EditorEnum::Action::PasteColorPlus])
-				// {
-				// 	this->onPasteWColor(sender);
 			}
+			//else if (actionID == EditorEnum::actionNode[EditorEnum::Action::CopyColorPlus])
+			//{
+			//	this->onCopyWColor(sender);
+			//}
+			//else if (actionID == EditorEnum::actionNode[EditorEnum::Action::PasteColorPlus])
+			//{
+			//	this->onPasteWColor(sender);
+			//}
 			else if (actionID == EditorEnum::actionNode[EditorEnum::Action::CreateExtras])
 			{
 				this->onCreateExtras(sender);
-				// }
-				// else if (actionID == EditorEnum::actionNode[EditorEnum::Action::UnlockLayers])
-				// {
-				// 	this->onUnlockAllLayers(sender);
-				// }
-				// else if (actionID == EditorEnum::actionNode[EditorEnum::Action::ResetUnused])
-				// {
-				// 	this->doResetUnused(sender);
-				// }
-				// else if (actionID == EditorEnum::actionNode[EditorEnum::Action::CreateLoop])
-				// {
-				// 	this->onCreateLoop(sender);
-				// }
-				// else if (actionID == EditorEnum::actionNode[EditorEnum::Action::UncheckPortals])
-				// {
-				// 	this->uncheckAllPortals(sender);
-				// }
-				// else if (actionID == EditorEnum::actionNode[EditorEnum::Action::Keys])
-				// {
-				// 	this->onKeybindings(sender);
+			}
+			//else if (actionID == EditorEnum::actionNode[EditorEnum::Action::UnlockLayers])
+			//{
+			//	this->onUnlockAllLayers(sender);
+			//}
+			//else if (actionID == EditorEnum::actionNode[EditorEnum::Action::1Unused])
+			//{
+			//	this->doResetUnused(sender);
+			//}
+			//else if (actionID == EditorEnum::actionNode[EditorEnum::Action::CreateLoop])
+			//{
+			//	this->onCreateLoop(sender);
+			//}
+			//else if (actionID == EditorEnum::actionNode[EditorEnum::Action::UncheckPortals])
+			//{
+			//	this->uncheckAllPortals(sender);
+			//}
+			//else if (actionID == EditorEnum::actionNode[EditorEnum::Action::Keys])
+			//{
+			//	this->onKeybindings(sender);
+			//}
+			//else if (actionID == EditorEnum::actionNode[EditorEnum::Action::Regroup])
+			//{
+			//	this->onReGroup(sender);
+			//}
+			//else if (actionID == EditorEnum::actionNode[EditorEnum::Action::ResetScroll])
+			//{
+			//	this->onResetScroll(sender);
+			//}
+			else if (actionID == EditorEnum::actionNode[EditorEnum::Action::SelectAll])
+			{
+				this->onSelectAll(sender);
+			}
+			else if (actionID == EditorEnum::actionNode[EditorEnum::Action::AlignX])
+			{
+				this->onAlignX(sender);
+			}
+			//else if (actionID == EditorEnum::actionNode[EditorEnum::Action::NewGroupX])
+			//{
+			//	this->onNewGroupX(sender);
+			//}
+			else if (actionID == EditorEnum::actionNode[EditorEnum::Action::SelectAllLeft])
+			{
+				this->onSelectAllLeft(sender);
+			}
+			else if (actionID == EditorEnum::actionNode[EditorEnum::Action::AlignY])
+			{
+				this->onAlignY(sender);
+			}
+			//else if (actionID == EditorEnum::actionNode[EditorEnum::Action::NewGroupY])
+			//{
+			//	this->onNewGroupY(sender);
+			//}
+			else if (actionID == EditorEnum::actionNode[EditorEnum::Action::SelectAllRight])
+			{
+				this->onSelectAllRight(sender);
 			};
 		};
 	};
