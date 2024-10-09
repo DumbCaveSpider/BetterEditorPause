@@ -58,38 +58,38 @@ std::map<std::string, std::string> EditorEnum::actionName{
     {EditorEnum::actionNode[EditorEnum::Action::SelectAllRight], "Select All Right"}};
 
 std::map<std::string, std::string> EditorEnum::actionIcon{
-    {EditorEnum::actionNode[EditorEnum::Action::BuildHelper], "a_buildHelper.png"_spr},
-    {EditorEnum::actionNode[EditorEnum::Action::CopyColorPlus], "a_copyColor+.png"_spr},
-    {EditorEnum::actionNode[EditorEnum::Action::PasteColorPlus], "a_pasteColor+.png"_spr},
-    {EditorEnum::actionNode[EditorEnum::Action::CreateExtras], "a_createExtras.png"_spr},
-    {EditorEnum::actionNode[EditorEnum::Action::UnlockLayers], "a_unlockLayers.png"_spr},
-    {EditorEnum::actionNode[EditorEnum::Action::ResetUnused], "a_resetUnused.png"_spr},
-    {EditorEnum::actionNode[EditorEnum::Action::CreateLoop], "a_createLoop.png"_spr},
-    {EditorEnum::actionNode[EditorEnum::Action::UncheckPortals], "a_uncheckPortals.png"_spr},
+    {EditorEnum::actionNode[EditorEnum::Action::BuildHelper], "o_BuildHelper.png"_spr},
+    {EditorEnum::actionNode[EditorEnum::Action::CopyColorPlus], "o_CopyColor.png"_spr},
+    {EditorEnum::actionNode[EditorEnum::Action::PasteColorPlus], "o_PasteColor.png"_spr},
+    {EditorEnum::actionNode[EditorEnum::Action::CreateExtras], "o_CreateExtras.png"_spr},
+    {EditorEnum::actionNode[EditorEnum::Action::UnlockLayers], "o_UnlockLayers.png"_spr},
+    {EditorEnum::actionNode[EditorEnum::Action::ResetUnused], "o_ResetUnused.png"_spr},
+    {EditorEnum::actionNode[EditorEnum::Action::CreateLoop], "o_CreateLoop.png"_spr},
+    {EditorEnum::actionNode[EditorEnum::Action::UncheckPortals], "o_UncheckPortals.png"_spr},
 
-    {EditorEnum::actionNode[EditorEnum::Action::Keys], "a_keys.png"_spr},
+    {EditorEnum::actionNode[EditorEnum::Action::Keys], "o_Keys.png"_spr},
 
-    {EditorEnum::actionNode[EditorEnum::Action::Regroup], "as_regroup.png"_spr},
-    {EditorEnum::actionNode[EditorEnum::Action::ResetScroll], "as_resetScroll.png"_spr},
-    {EditorEnum::actionNode[EditorEnum::Action::SelectAll], "as_selectAll.png"_spr},
-    {EditorEnum::actionNode[EditorEnum::Action::AlignX], "as_alignX.png"_spr},
-    {EditorEnum::actionNode[EditorEnum::Action::NewGroupX], "as_newGroupX.png"_spr},
-    {EditorEnum::actionNode[EditorEnum::Action::SelectAllLeft], "as_selectAllLeft.png"_spr},
-    {EditorEnum::actionNode[EditorEnum::Action::AlignY], "as_alignY.png"_spr},
-    {EditorEnum::actionNode[EditorEnum::Action::NewGroupY], "as_newGroupY.png"_spr},
-    {EditorEnum::actionNode[EditorEnum::Action::SelectAllRight], "as_selectAllRight.png"_spr}};
+    {EditorEnum::actionNode[EditorEnum::Action::Regroup], "o_Regroup.png"_spr},
+    {EditorEnum::actionNode[EditorEnum::Action::ResetScroll], "o_ResetScroll.png"_spr},
+    {EditorEnum::actionNode[EditorEnum::Action::SelectAll], "o_SelectAll.png"_spr},
+    {EditorEnum::actionNode[EditorEnum::Action::AlignX], "o_AlignX.png"_spr},
+    {EditorEnum::actionNode[EditorEnum::Action::NewGroupX], "o_CreateGroupX.png"_spr},
+    {EditorEnum::actionNode[EditorEnum::Action::SelectAllLeft], "o_SelectAllLeft.png"_spr},
+    {EditorEnum::actionNode[EditorEnum::Action::AlignY], "o_AlignY.png"_spr},
+    {EditorEnum::actionNode[EditorEnum::Action::NewGroupY], "o_CreateGroupY.png"_spr},
+    {EditorEnum::actionNode[EditorEnum::Action::SelectAllRight], "o_SelectAllRight.png"_spr}};
 
 /*
 editor options
 */
 
 std::map<EditorEnum::Option, std::string> EditorEnum::optionNode{
+    {EditorEnum::Option::ShowHitboxes, "show-hitboxes"_spr},
+    {EditorEnum::Option::HideInvisible, "hide-invis"_spr},
     {EditorEnum::Option::PreviewMode, "preview-mode"_spr},
     {EditorEnum::Option::PreviewAnimations, "preview-anim"_spr},
     {EditorEnum::Option::PreviewParticles, "preview-particles"_spr},
     {EditorEnum::Option::PreviewShaders, "preview-shaders"_spr},
-    {EditorEnum::Option::ShowHitboxes, "show-hitboxes"_spr},
-    {EditorEnum::Option::HideInvisible, "hide-invis"_spr},
     {EditorEnum::Option::ShowGround, "show-ground"_spr},
     {EditorEnum::Option::ShowObjectInfo, "show-object-info"_spr},
     {EditorEnum::Option::ShowGrid, "show-grid"_spr},
@@ -97,12 +97,12 @@ std::map<EditorEnum::Option, std::string> EditorEnum::optionNode{
     {EditorEnum::Option::IgnoreDamage, "ignore-damage"_spr}};
 
 std::map<std::string, std::string> EditorEnum::optionName{
+    {EditorEnum::optionNode[EditorEnum::Option::ShowHitboxes], "Show Hitboxes"},
+    {EditorEnum::optionNode[EditorEnum::Option::HideInvisible], "Hide Invisible"},
     {EditorEnum::optionNode[EditorEnum::Option::PreviewMode], "Preview Mode"},
     {EditorEnum::optionNode[EditorEnum::Option::PreviewAnimations], "Preview Animations"},
     {EditorEnum::optionNode[EditorEnum::Option::PreviewParticles], "Preview Particles"},
     {EditorEnum::optionNode[EditorEnum::Option::PreviewShaders], "Preview Shaders"},
-    {EditorEnum::optionNode[EditorEnum::Option::ShowHitboxes], "Show Hitboxes"},
-    {EditorEnum::optionNode[EditorEnum::Option::HideInvisible], "Hide Invisible"},
     {EditorEnum::optionNode[EditorEnum::Option::ShowGround], "Show Ground"},
     {EditorEnum::optionNode[EditorEnum::Option::ShowObjectInfo], "Show Object Information"},
     {EditorEnum::optionNode[EditorEnum::Option::ShowGrid], "Show Grid"},
@@ -110,12 +110,12 @@ std::map<std::string, std::string> EditorEnum::optionName{
     {EditorEnum::optionNode[EditorEnum::Option::IgnoreDamage], "No-Clip"}};
 
 std::map<std::string, std::string> EditorEnum::optionSpriteEnabled{
+    {EditorEnum::optionNode[EditorEnum::Option::ShowHitboxes], "t_showHitboxesOn.png"_spr},
+    {EditorEnum::optionNode[EditorEnum::Option::HideInvisible], "t_hideInvisibleOn.png"_spr},
     {EditorEnum::optionNode[EditorEnum::Option::PreviewMode], "t_previewModeOn.png"_spr},
     {EditorEnum::optionNode[EditorEnum::Option::PreviewAnimations], "t_previewAnimationsOn.png"_spr},
     {EditorEnum::optionNode[EditorEnum::Option::PreviewParticles], "t_previewParticlesOn.png"_spr},
     {EditorEnum::optionNode[EditorEnum::Option::PreviewShaders], "t_previewShadersOn.png"_spr},
-    {EditorEnum::optionNode[EditorEnum::Option::ShowHitboxes], "t_showHitboxesOn.png"_spr},
-    {EditorEnum::optionNode[EditorEnum::Option::HideInvisible], "t_hideInvisibleOn.png"_spr},
     {EditorEnum::optionNode[EditorEnum::Option::ShowGround], "t_showGroundOn.png"_spr},
     {EditorEnum::optionNode[EditorEnum::Option::ShowObjectInfo], "t_showObjectInfoOn.png"_spr},
     {EditorEnum::optionNode[EditorEnum::Option::ShowGrid], "t_showGridOn.png"_spr},
@@ -123,12 +123,12 @@ std::map<std::string, std::string> EditorEnum::optionSpriteEnabled{
     {EditorEnum::optionNode[EditorEnum::Option::IgnoreDamage], "t_ignoreDamageOn.png"_spr}};
 
 std::map<std::string, std::string> EditorEnum::optionSpriteDisabled{
+    {EditorEnum::optionNode[EditorEnum::Option::ShowHitboxes], "t_showHitboxesOff.png"_spr},
+    {EditorEnum::optionNode[EditorEnum::Option::HideInvisible], "t_hideInvisibleOff.png"_spr},
     {EditorEnum::optionNode[EditorEnum::Option::PreviewMode], "t_previewModeOff.png"_spr},
     {EditorEnum::optionNode[EditorEnum::Option::PreviewAnimations], "t_previewAnimationsOff.png"_spr},
     {EditorEnum::optionNode[EditorEnum::Option::PreviewParticles], "t_previewParticlesOff.png"_spr},
     {EditorEnum::optionNode[EditorEnum::Option::PreviewShaders], "t_previewShadersOff.png"_spr},
-    {EditorEnum::optionNode[EditorEnum::Option::ShowHitboxes], "t_showHitboxesOff.png"_spr},
-    {EditorEnum::optionNode[EditorEnum::Option::HideInvisible], "t_hideInvisibleOff.png"_spr},
     {EditorEnum::optionNode[EditorEnum::Option::ShowGround], "t_showGroundOff.png"_spr},
     {EditorEnum::optionNode[EditorEnum::Option::ShowObjectInfo], "t_showObjectInfoOff.png"_spr},
     {EditorEnum::optionNode[EditorEnum::Option::ShowGrid], "t_showGridOff.png"_spr},
@@ -136,12 +136,12 @@ std::map<std::string, std::string> EditorEnum::optionSpriteDisabled{
     {EditorEnum::optionNode[EditorEnum::Option::IgnoreDamage], "t_ignoreDamageOff.png"_spr}};
 
 std::map<std::string, std::string> EditorEnum::optionVar{
+    {EditorEnum::optionNode[EditorEnum::Option::ShowHitboxes], "0045"},
+    {EditorEnum::optionNode[EditorEnum::Option::HideInvisible], "0121"},
     {EditorEnum::optionNode[EditorEnum::Option::PreviewMode], "0036"},
     {EditorEnum::optionNode[EditorEnum::Option::PreviewAnimations], "0118"},
     {EditorEnum::optionNode[EditorEnum::Option::PreviewParticles], "0117"},
     {EditorEnum::optionNode[EditorEnum::Option::PreviewShaders], "0158"},
-    {EditorEnum::optionNode[EditorEnum::Option::ShowHitboxes], "0045"},
-    {EditorEnum::optionNode[EditorEnum::Option::HideInvisible], "0121"},
     {EditorEnum::optionNode[EditorEnum::Option::ShowGround], "0037"},
     {EditorEnum::optionNode[EditorEnum::Option::ShowObjectInfo], "0041"},
     {EditorEnum::optionNode[EditorEnum::Option::ShowGrid], "0038"},

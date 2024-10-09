@@ -1,5 +1,8 @@
 # Better Editor Pause
-###### Organize the level editor's pause menu's buttons to more compact and readable popups!
+###### Organize the level editor's action and option buttons to more readable menus!
+
+### Credits
+**Brift** - Action button icons
 
 ### Developers
 **[ArcticWoof](https://github.com/DumbCaveSpider)**   

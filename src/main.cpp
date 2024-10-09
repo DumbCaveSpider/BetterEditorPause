@@ -5,10 +5,15 @@
 #include <Geode/Loader.hpp>
 
 #include <Geode/modify/EditorPauseLayer.hpp>
+#include <Geode/modify/DrawGridLayer.hpp>
+#include <Geode/modify/GameObject.hpp>
+#include <Geode/modify/EditorUI.hpp>
 
 #include <Geode/binding/EditorPauseLayer.hpp>
 #include <Geode/binding/LevelEditorLayer.hpp>
+#include <Geode/binding/DrawGridLayer.hpp>
 #include <Geode/binding/GameManager.hpp>
+#include <Geode/binding/EditorUI.hpp>
 
 using namespace geode::prelude;
 
@@ -18,13 +23,42 @@ auto getThisLoader = geode::Loader::get();
 auto gm = GameManager::get();
 auto winSize = CCDirector::sharedDirector()->getWinSize();
 
+class $modify(DrawGridLayer)
+{
+	$override void draw()
+	{
+		bool origBool = m_editorLayer->m_previewMode;
+		DrawGridLayer::draw();
+		m_editorLayer->m_previewMode = origBool;
+	};
+};
+
+// class $modify(EditorUI)
+// {
+// 	$override void selectObject(GameObject * obj, bool filter)
+// 	{
+// 		if (!static_cast<GameObject *>(obj)->shouldHide())
+// 		{
+// 			EditorUI::selectObject(obj, filter);
+// 		};
+// 	};
+// };
+
 class $modify(EditorPause, EditorPauseLayer)
 {
+	struct FakeEditorPauseLayer final
+	{
+		char m_alloc[sizeof(EditorPauseLayer)];
+		EditorPauseLayer *operator->()
+		{
+			return reinterpret_cast<EditorPauseLayer *>(&m_alloc);
+		};
+	};
+
 	bool init(LevelEditorLayer * p0)
 	{
 		if (EditorPauseLayer::init(p0))
 		{
-
 			// For all of the people reading this code, I'm sorry. I'm sorry for the mess I've created.
 			// Be sure you have a good day, and remember to drink water and eat food.
 
@@ -72,6 +106,7 @@ class $modify(EditorPause, EditorPauseLayer)
 			newActionsMenu_layout->setCrossAxisAlignment(AxisAlignment::Even);
 			newActionsMenu_layout->setCrossAxisLineAlignment(AxisAlignment::Even);
 			newActionsMenu_layout->ignoreInvisibleChildren(true);
+			newActionsMenu_layout->setAxisReverse(false);
 
 			AxisLayoutOptions *newActionsMenu_layoutOptions = AxisLayoutOptions::create();
 			newActionsMenu_layoutOptions->setAutoScale(false);
@@ -103,6 +138,7 @@ class $modify(EditorPause, EditorPauseLayer)
 			newTogglesMenu_layout->setCrossAxisAlignment(AxisAlignment::Even);
 			newTogglesMenu_layout->setCrossAxisLineAlignment(AxisAlignment::Even);
 			newTogglesMenu_layout->ignoreInvisibleChildren(true);
+			newTogglesMenu_layout->setAxisReverse(true);
 
 			AxisLayoutOptions *newTogglesMenu_layoutOptions = AxisLayoutOptions::create();
 			newTogglesMenu_layoutOptions->setAutoScale(true);
@@ -355,11 +391,6 @@ class $modify(EditorPause, EditorPauseLayer)
 		};
 	};
 
-	void onNewToggles(CCObject * sender)
-	{
-		Notification::create("Button yes", NotificationIcon::Success, 2.f)->show();
-	};
-
 	void onAction(CCObject * sender)
 	{
 		CCNode *nodeObject = as<CCNode *>(sender);
@@ -414,7 +445,7 @@ class $modify(EditorPause, EditorPauseLayer)
 		}
 		else
 		{
-			log::error("Editor option {} valid", nodeID.c_str());
+			log::debug("Editor option {} valid", nodeID.c_str());
 
 			EditorPause::initiateOption(nodeID, sender);
 		};
@@ -476,7 +507,7 @@ class $modify(EditorPause, EditorPauseLayer)
 		auto nodeObject = as<CCNode *>(sender);
 		auto togglerObject = as<CCMenuItemToggler *>(nodeObject);
 
-		auto validate = EditorEnum::actionName[optionID];
+		auto validate = EditorEnum::optionName[optionID];
 
 		if (validate.empty())
 		{
@@ -486,7 +517,57 @@ class $modify(EditorPause, EditorPauseLayer)
 		{
 			log::debug("Toggling editor option of ID {}...", optionID);
 
+			if (optionID == EditorEnum::optionNode[EditorEnum::Option::PreviewMode])
+			{
+				log::debug("Unknown protocol for action {}", optionID);
+			}
+			else if (optionID == EditorEnum::optionNode[EditorEnum::Option::PreviewAnimations])
+			{
+				EditorPause::togglePreviewAnim(sender);
+			}
+			else if (optionID == EditorEnum::optionNode[EditorEnum::Option::PreviewParticles])
+			{
+				m_editorLayer->updatePreviewParticles();
+			}
+			else if (optionID == EditorEnum::optionNode[EditorEnum::Option::PreviewShaders])
+			{
+				EditorPause::onNewToggles(sender);
+			}
+			else if (optionID == EditorEnum::optionNode[EditorEnum::Option::ShowHitboxes])
+			{
+				EditorPause::onNewToggles(sender);
+			}
+			else if (optionID == EditorEnum::optionNode[EditorEnum::Option::HideInvisible])
+			{
+				EditorPause::onNewToggles(sender);
+			}
+			else if (optionID == EditorEnum::optionNode[EditorEnum::Option::ShowGround])
+			{
+				m_editorLayer->m_groundLayer->setVisible(togglerObject->isToggled());
+			}
+			else if (optionID == EditorEnum::optionNode[EditorEnum::Option::ShowObjectInfo])
+			{
+				EditorPause::onNewToggles(sender);
+			}
+			else if (optionID == EditorEnum::optionNode[EditorEnum::Option::ShowGrid])
+			{
+				log::debug("Unknown protocol for action {}", optionID);
+			}
+			else if (optionID == EditorEnum::optionNode[EditorEnum::Option::SelectFilter])
+			{
+				EditorPause::onNewToggles(sender);
+			}
+			else if (optionID == EditorEnum::optionNode[EditorEnum::Option::IgnoreDamage])
+			{
+				EditorPause::onNewToggles(sender);
+			};
+
 			togglerObject->toggle(gm->getGameVariable(EditorEnum::optionVar[nodeObject->getID()].c_str()));
 		};
+	};
+
+	void onNewToggles(CCObject * sender)
+	{
+		Notification::create("Button yes", NotificationIcon::Success, 2.f)->show();
 	};
 };

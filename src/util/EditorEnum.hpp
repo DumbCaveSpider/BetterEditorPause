@@ -39,12 +39,12 @@ public:
 
     enum class Option
     {
-        PreviewMode = 1,
-        PreviewAnimations = 2,
-        PreviewParticles = 3,
-        PreviewShaders = 4,
-        ShowHitboxes = 5,
-        HideInvisible = 6,
+        ShowHitboxes = 1,
+        HideInvisible = 2,
+        PreviewMode = 3,
+        PreviewAnimations = 4,
+        PreviewParticles = 5,
+        PreviewShaders = 6,
         ShowGround = 7,
         ShowObjectInfo = 8,
         ShowGrid = 9,
