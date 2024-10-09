@@ -382,7 +382,7 @@ class $modify(EditorPause, EditorPauseLayer)
 				// TIME TAB //////////////////////////////////////////////////////////////////////////////////////
 
 				// Should be the time spent on editor but this is just a test. Should use Timeul
-				auto ObjectCount = CCLabelBMFont::create(CCString::createWithFormat("Objects: %i", LevelEditorLayer::get()->m_objectCount)->getCString(), "bigFont.fnt"); // what object count? am i stupid?
+				auto ObjectCount = CCLabelBMFont::create(CCString::createWithFormat("Objects: %i", LevelEditorLayer::get()->m_objectCount.value())->getCString(), "bigFont.fnt"); // what object count? am i stupid?
 				ObjectCount->setScale(0.3);
 				ObjectCount->setPosition({newTimeMenu_sprite->getContentWidth() / 2, newTimeMenu_sprite->getContentHeight() - 80.f});
 				ObjectCount->ignoreAnchorPointForPosition(false);
