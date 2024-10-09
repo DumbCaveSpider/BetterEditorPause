@@ -15,6 +15,8 @@
 #include <Geode/binding/GameManager.hpp>
 #include <Geode/binding/EditorUI.hpp>
 
+#include <util/sources/FakeEditorPauseLayer.hpp>
+
 using namespace geode::prelude;
 
 auto getThisMod = geode::getMod();
