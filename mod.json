@@ -16,7 +16,8 @@
 	"description": "Organizes editor pause menu's tools",
 	"tags": [
 		"editor",
-		"interface"
+		"interface",
+		"enhancement"
 	],
 	"resources": {
 		"sprites": [
@@ -36,15 +37,27 @@
 			"description": "The mod's user interface.",
 			"type": "title"
 		},
-		"move-toggles": {
-			"name": "Move Editor Pause Settings",
-			"description": "Move the editor pause menu's toggle settings to an organized popup.",
+		"move-tools": {
+			"name": "Move Creator Actions",
+			"description": "Organize the editor pause menu's creator action buttons.",
 			"type": "bool",
 			"default": true
 		},
-		"move-tools": {
-			"name": "Move Editor Pause Actions",
-			"description": "Move the editor pause menu's action buttons to an organized popup.",
+		"move-toggles": {
+			"name": "Move Pause Options",
+			"description": "Organize the editor pause menu's editor options.",
+			"type": "bool",
+			"default": true
+		},
+		"move-resume": {
+			"name": "Move Resume Menu",
+			"description": "Organize the editor pause menu's resume menu.",
+			"type": "bool",
+			"default": true
+		},
+		"move-info": {
+			"name": "Move Editor Information",
+			"description": "Organize the editor pause menu's information labels.",
 			"type": "bool",
 			"default": true
 		},
@@ -55,15 +68,15 @@
 		},
 		"confirm-use": {
 			"name": "Confirm Actions",
-			"description": "Add a confirmation popup when using an editor action.",
+			"description": "Add a confirmation popup when using a creator action.",
 			"type": "bool",
 			"default": true
 		}
 	},
 	"links": {
-		"community": "https://discord.gg/2jPCtJhHNp",
+		"community": "https://www.discord.com/invite/2jPCtJhHNp",
 		"homepage": "https://www.arcticwoof.com.au/",
-		"source": "https://github.com/DumbCaveSpider/BetterEditorPause"
+		"source": "https://github.com/DumbCaveSpider/BetterEditorPause/"
 	},
 	"api": {
 		"include": [
