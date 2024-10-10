@@ -94,7 +94,7 @@ class $modify(EditorPause, EditorPauseLayer)
 				newActionsMenu_sprite->setScaledContentSize({150.f, 300.f});
 				newActionsMenu_sprite->setPosition({this->getContentWidth() - 90.f, 160.f});
 				newActionsMenu_sprite->setOpacity(150);
-				newActionsMenu_sprite->setColor(ccColor3B(0, 0, 0));
+				newActionsMenu_sprite->setColor(ccColor3B({0, 0, 0}));
 				newActionsMenu_sprite->setZOrder(0);
 
 				// menu layout for buttons
@@ -191,7 +191,7 @@ class $modify(EditorPause, EditorPauseLayer)
 				newTogglesMenu_sprite->setScaledContentSize({150.f, 300.f});
 				newTogglesMenu_sprite->setPosition({90.f, 160.f});
 				newTogglesMenu_sprite->setOpacity(150);
-				newTogglesMenu_sprite->setColor(ccColor3B(0, 0, 0));
+				newTogglesMenu_sprite->setColor(ccColor3B({0, 0, 0}));
 				newTogglesMenu_sprite->setZOrder(0);
 
 				// menu layout for buttons
@@ -371,7 +371,7 @@ class $modify(EditorPause, EditorPauseLayer)
 				newTimeMenu_sprite->setScaledContentSize({220.f, 100.f});
 				newTimeMenu_sprite->setPosition({this->getContentWidth() / 2.f, 320.f});
 				newTimeMenu_sprite->setOpacity(150);
-				newTimeMenu_sprite->setColor(ccColor3B(0, 0, 0));
+				newTimeMenu_sprite->setColor(ccColor3B({0, 0, 0}));
 				newTimeMenu_sprite->setZOrder(0);
 
 				// idk why geode doesnt have a freaking way to get the value of the object count, sfx and songs individually
