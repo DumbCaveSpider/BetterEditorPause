@@ -44,6 +44,26 @@ class $modify(DrawGridLayer)
 // 	};
 // };
 
+
+// stolen, er, borrowed from BetterInfo (https://github.com/Cvolton/betterinfo-geode/blob/master/src/utils/TimeUtils.cpp)
+// i also stole this from DiscordRPC
+std::string workingTime(int value){
+    if(value < 0) return fmt::format("NA ({})", value);
+    if(value == 0) return "NA";
+
+    int hours = value / 3600;
+    int minutes = (value % 3600) / 60;
+    int seconds = value % 60;
+
+    std::ostringstream stream;
+    if(hours > 0) stream << hours << "h ";
+    if(minutes > 0) stream << minutes << "m ";
+    stream << seconds << "s";
+
+    return stream.str();
+}
+
+
 class $modify(EditorPause, EditorPauseLayer)
 {
 	struct FakeEditorPauseLayer final
@@ -57,6 +77,7 @@ class $modify(EditorPause, EditorPauseLayer)
 
 	bool init(LevelEditorLayer * p0)
 	{
+
 		if (EditorPauseLayer::init(p0))
 		{
 			// For all of the people reading this code, I'm sorry. I'm sorry for the mess I've created.
@@ -66,6 +87,8 @@ class $modify(EditorPause, EditorPauseLayer)
 			//
 			// love,
 			// chris
+
+			auto editLayer = LevelEditorLayer::get();
 
 			auto actionsMenu = this->getChildByID("actions-menu");
 			auto smallActionsMenu = this->getChildByID("small-actions-menu");
@@ -275,7 +298,9 @@ class $modify(EditorPause, EditorPauseLayer)
 				newResumeMenu->setPosition({this->getContentWidth() / 2.f, 170.f});
 
 				// move guidelines menu
-				guidelinesMenu->setPosition({this->getContentWidth() / 2.f, 60.f});
+				guidelinesMenu->setPosition({this->getContentWidth() / 2.f, 65.f});
+				guidelinesMenu->setScale(0.8);
+
 
 				// RESUME BUTTON //////////////////////////////////////////////////////////////////////////////////////
 
@@ -374,6 +399,17 @@ class $modify(EditorPause, EditorPauseLayer)
 				newTimeMenu_sprite->setColor(ccColor3B({0, 0, 0}));
 				newTimeMenu_sprite->setZOrder(0);
 
+				// newLevelInfo background
+				CCScale9Sprite *newLevelInfo_sprite = CCScale9Sprite::create("square02b_001.png");
+				newLevelInfo_sprite->setID("level-info-menu"_spr);
+				newLevelInfo_sprite->ignoreAnchorPointForPosition(false);
+				newLevelInfo_sprite->setAnchorPoint({0.5, 0.5});
+				newLevelInfo_sprite->setScaledContentSize({220.f, 100.f});
+				newLevelInfo_sprite->setPosition({this->getContentWidth() / 2.f, 0.f});
+				newLevelInfo_sprite->setOpacity(150);
+				newLevelInfo_sprite->setColor(ccColor3B({0, 0, 0}));
+				newLevelInfo_sprite->setZOrder(0);
+
 				// idk why geode doesnt have a freaking way to get the value of the object count, sfx and songs individually
 				auto objectCount = as<CCLabelBMFont *>(infoMenu->getChildByID("object-count-label"));
 				auto lengthLabel = as<CCLabelBMFont *>(infoMenu->getChildByID("length-label"));
@@ -381,15 +417,33 @@ class $modify(EditorPause, EditorPauseLayer)
 
 				// TIME TAB //////////////////////////////////////////////////////////////////////////////////////
 
-				// Should be the time spent on editor but this is just a test. Should use Timeul
-				auto ObjectCount = CCLabelBMFont::create(CCString::createWithFormat("Objects: %i", LevelEditorLayer::get()->m_objectCount.value())->getCString(), "bigFont.fnt"); // what object count? am i stupid?
-				ObjectCount->setScale(0.3);
-				ObjectCount->setPosition({newTimeMenu_sprite->getContentWidth() / 2, newTimeMenu_sprite->getContentHeight() - 80.f});
+				// workingTime2 is the total time spent in the editor 
+				auto TimeSession = CCLabelBMFont::create(CCString::createWithFormat("In Editor: %i", workingTime(editLayer->m_level->m_workingTime2))->getCString(), "goldFont.fnt");
+				TimeSession->setScale(0.6);
+				TimeSession->setPosition({newTimeMenu_sprite->getContentWidth() / 2, newTimeMenu_sprite->getContentHeight() - 35.f});
+				TimeSession->ignoreAnchorPointForPosition(false);
+				TimeSession->setZOrder(1);
+
+				// workingTime is time currently spent in the editor
+				auto TimeTotal = CCLabelBMFont::create(CCString::createWithFormat("Current: %i", workingTime(editLayer->m_level->m_workingTime))->getCString(), "goldFont.fnt");
+				TimeTotal->setScale(0.6);
+				TimeTotal->setPosition({newTimeMenu_sprite->getContentWidth() / 2, newTimeMenu_sprite->getContentHeight() - 15.f});
+				TimeTotal->ignoreAnchorPointForPosition(false);
+
+				// LEVEL INFO TAB //////////////////////////////////////////////////////////////////////////////////////
+
+				auto ObjectCount = CCLabelBMFont::create(CCString::createWithFormat("Objects: %i", editLayer->m_objectCount.value())->getCString(), "bigFont.fnt"); // what object count? am i stupid?
+				ObjectCount->setScale(0.4);
+				ObjectCount->setPosition({newLevelInfo_sprite->getContentWidth() / 2, 80.f});
 				ObjectCount->ignoreAnchorPointForPosition(false);
 				ObjectCount->setZOrder(1);
 
-				newTimeMenu_sprite->addChild(ObjectCount);
+				newLevelInfo_sprite->addChild(ObjectCount);
+				newTimeMenu_sprite->addChild(TimeSession);
+				newTimeMenu_sprite->addChild(TimeTotal);
+
 				this->addChild(newTimeMenu_sprite);
+				this->addChild(newLevelInfo_sprite);
 			};
 
 			// remove probably obtrusive support betteredit button, sowwy
