@@ -295,10 +295,10 @@ class $modify(EditorPause, EditorPauseLayer)
 				newResumeMenu->setID("resume_menu"_spr);
 				newResumeMenu->ignoreAnchorPointForPosition(false);
 				newResumeMenu->setScaledContentSize({200.f, 200.f});
-				newResumeMenu->setPosition({this->getContentWidth() / 2.f, 170.f});
+				newResumeMenu->setPosition({this->getContentWidth() / 2.f, 180.f});
 
 				// move guidelines menu
-				guidelinesMenu->setPosition({this->getContentWidth() / 2.f, 65.f});
+				guidelinesMenu->setPosition({this->getContentWidth() / 2.f, 70.f});
 				guidelinesMenu->setScale(0.8);
 
 
@@ -417,28 +417,37 @@ class $modify(EditorPause, EditorPauseLayer)
 
 				// TIME TAB //////////////////////////////////////////////////////////////////////////////////////
 
-				// workingTime2 is the total time spent in the editor 
-				auto TimeSession = CCLabelBMFont::create(CCString::createWithFormat("In Editor: %i", workingTime(editLayer->m_level->m_workingTime2))->getCString(), "goldFont.fnt");
-				TimeSession->setScale(0.6);
-				TimeSession->setPosition({newTimeMenu_sprite->getContentWidth() / 2, newTimeMenu_sprite->getContentHeight() - 35.f});
+				// level name (dont add this, just testing if it fetch the level name directly through the m_editorLayer), it works!
+				auto LevelName = CCLabelBMFont::create(CCString::createWithFormat("%s", m_editorLayer->m_level->m_levelName)->getCString(), "goldFont.fnt");
+				LevelName->setScale(0.3);
+				LevelName->setPosition({newTimeMenu_sprite->getContentWidth() / 2, 65.f});
+				LevelName->ignoreAnchorPointForPosition(false);
+				LevelName->setZOrder(1);
+
+				// workingTime2 is the total time spent in the editor (idk how to convert this to a readable format)
+				auto TimeSession = CCLabelBMFont::create(CCString::createWithFormat("In Editor: %i", workingTime(m_editorLayer->m_level->m_workingTime2))->getCString(), "bigFont.fnt");
+				TimeSession->setScale(0.5);
+				TimeSession->setPosition({newTimeMenu_sprite->getContentWidth() / 2, 35.f});
 				TimeSession->ignoreAnchorPointForPosition(false);
 				TimeSession->setZOrder(1);
 
-				// workingTime is time currently spent in the editor
-				auto TimeTotal = CCLabelBMFont::create(CCString::createWithFormat("Current: %i", workingTime(editLayer->m_level->m_workingTime))->getCString(), "goldFont.fnt");
-				TimeTotal->setScale(0.6);
-				TimeTotal->setPosition({newTimeMenu_sprite->getContentWidth() / 2, newTimeMenu_sprite->getContentHeight() - 15.f});
+				// workingTime is time currently spent in the editor (same thing, pls fix)
+				auto TimeTotal = CCLabelBMFont::create(CCString::createWithFormat("In Session: %i", workingTime(m_editorLayer->m_level->m_workingTime))->getCString(), "bigFont.fnt");
+				TimeTotal->setScale(0.5);
+				TimeTotal->setPosition({newTimeMenu_sprite->getContentWidth() / 2, 15.f});
 				TimeTotal->ignoreAnchorPointForPosition(false);
 
 				// LEVEL INFO TAB //////////////////////////////////////////////////////////////////////////////////////
 
-				auto ObjectCount = CCLabelBMFont::create(CCString::createWithFormat("Objects: %i", editLayer->m_objectCount.value())->getCString(), "bigFont.fnt"); // what object count? am i stupid?
+				auto ObjectCount = CCLabelBMFont::create(CCString::createWithFormat("Objects\n%i", m_editorLayer->m_objectCount.value())->getCString(), "bigFont.fnt"); // what object count? am i stupid?
 				ObjectCount->setScale(0.4);
 				ObjectCount->setPosition({newLevelInfo_sprite->getContentWidth() / 2, 80.f});
 				ObjectCount->ignoreAnchorPointForPosition(false);
+				ObjectCount->setAlignment(CCTextAlignment::kCCTextAlignmentCenter);
 				ObjectCount->setZOrder(1);
 
 				newLevelInfo_sprite->addChild(ObjectCount);
+
 				newTimeMenu_sprite->addChild(TimeSession);
 				newTimeMenu_sprite->addChild(TimeTotal);
 
