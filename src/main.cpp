@@ -44,40 +44,54 @@ class $modify(DrawGridLayer)
 // 	};
 // };
 
-
 // stolen, er, borrowed from BetterInfo (https://github.com/Cvolton/betterinfo-geode/blob/master/src/utils/TimeUtils.cpp)
 // i also stole this from DiscordRPC
-std::string workingTime(int value){
-    if(value < 0) return fmt::format("NA ({})", value);
-    if(value == 0) return "NA";
+std::string workingTime(int value)
+{
+	if (value < 0)
+		return fmt::format("NA ({})", value);
 
-    int hours = value / 3600;
-    int minutes = (value % 3600) / 60;
-    int seconds = value % 60;
+	if (value == 0)
+		return "NA";
 
-    std::ostringstream stream;
-    if(hours > 0) stream << hours << "h ";
-    if(minutes > 0) stream << minutes << "m ";
-    stream << seconds << "s";
+	int hours = value / 3600;
+	int minutes = (value % 3600) / 60;
+	int seconds = value % 60;
 
-    return stream.str();
-}
+	std::ostringstream stream;
+	if (hours > 0)
+		stream << hours << "h ";
 
+	if (minutes > 0)
+		stream << minutes << "m ";
+
+	stream << seconds << "s";
+
+	return stream.str();
+};
 
 class $modify(EditorPause, EditorPauseLayer)
 {
 	struct FakeEditorPauseLayer final
 	{
 		char m_alloc[sizeof(EditorPauseLayer)];
+
 		EditorPauseLayer *operator->()
 		{
 			return reinterpret_cast<EditorPauseLayer *>(&m_alloc);
 		};
 	};
 
+	struct Fields
+	{
+		CCLabelBMFont *SessionTimeLabel = nullptr;
+		CCLabelBMFont *TotalTimeLabel = nullptr;
+
+		int timeAdded = 0;
+	};
+
 	bool init(LevelEditorLayer * p0)
 	{
-
 		if (EditorPauseLayer::init(p0))
 		{
 			// For all of the people reading this code, I'm sorry. I'm sorry for the mess I've created.
@@ -301,7 +315,6 @@ class $modify(EditorPause, EditorPauseLayer)
 				guidelinesMenu->setPosition({this->getContentWidth() / 2.f, 75.f});
 				guidelinesMenu->setScale(0.8);
 
-
 				// RESUME BUTTON //////////////////////////////////////////////////////////////////////////////////////
 
 				// Resume Button
@@ -417,30 +430,32 @@ class $modify(EditorPause, EditorPauseLayer)
 
 				// TIME TAB //////////////////////////////////////////////////////////////////////////////////////
 
-				auto TotalTime = workingTime(m_editorLayer->m_level->m_workingTime);
-				auto SessionTime = workingTime(m_editorLayer->m_level->m_workingTime2);
+				auto TotalTime = workingTime(m_editorLayer->m_level->m_workingTime + m_fields->timeAdded);
+				auto SessionTime = workingTime(m_editorLayer->m_level->m_workingTime2 + m_fields->timeAdded);
 
-				log::debug("Total Time: {}", TotalTime);
-				log::debug("Session Time: {}", SessionTime);
+				log::debug("Total Time: {}, ({})", TotalTime, m_editorLayer->m_level->m_workingTime + m_fields->timeAdded);
+				log::debug("Session Time: {}, ({})", SessionTime, m_editorLayer->m_level->m_workingTime2 + m_fields->timeAdded);
 
 				// workingTime is the total time spent in the editor (idk how to convert this to a readable format)
-				auto TotalTimeLabel = CCLabelBMFont::create(CCString::createWithFormat("In Editor: %s", TotalTime)->getCString(), "bigFont.fnt");
-				TotalTimeLabel->setScale(0.5);
-				TotalTimeLabel->setPosition({newTimeMenu_sprite->getContentWidth() / 2, 35.f});
-				TotalTimeLabel->ignoreAnchorPointForPosition(false);
-				TotalTimeLabel->setZOrder(1);
+				m_fields->TotalTimeLabel = CCLabelBMFont::create(fmt::format("In Editor: {}", TotalTime).c_str(), "bigFont.fnt");
+				m_fields->TotalTimeLabel->setScale(0.5);
+				m_fields->TotalTimeLabel->setPosition({newTimeMenu_sprite->getContentWidth() / 2, 35.f});
+				m_fields->TotalTimeLabel->ignoreAnchorPointForPosition(false);
+				m_fields->TotalTimeLabel->setZOrder(1);
 
 				// workingTime2 is time currently spent in the session (same thing, pls fix)
-				auto SessionTimeLabel = CCLabelBMFont::create(CCString::createWithFormat("In Session: %s", SessionTime)->getCString(), "bigFont.fnt");
-				SessionTimeLabel->setScale(0.5);
-				SessionTimeLabel->setPosition({newTimeMenu_sprite->getContentWidth() / 2, 15.f});
-				SessionTimeLabel->ignoreAnchorPointForPosition(false);
-				SessionTimeLabel->setZOrder(1);
+				m_fields->SessionTimeLabel = CCLabelBMFont::create(fmt::format("Session: {}", SessionTime).c_str(), "bigFont.fnt");
+				m_fields->SessionTimeLabel->setScale(0.5);
+				m_fields->SessionTimeLabel->setPosition({newTimeMenu_sprite->getContentWidth() / 2, 15.f});
+				m_fields->SessionTimeLabel->ignoreAnchorPointForPosition(false);
+				m_fields->SessionTimeLabel->setZOrder(1);
+
+				this->schedule(schedule_selector(EditorPause::tickTimeLabel), 1.f, kCCRepeatForever, 1.f);
 
 				// LEVEL INFO TAB //////////////////////////////////////////////////////////////////////////////////////
 
-				int LevelLength = m_editorLayer->m_level->m_levelLength; 
-				// 0 is tiny 
+				int LevelLength = m_editorLayer->m_level->m_levelLength;
+				// 0 is tiny
 				// 1 is short
 				// 2 is medium
 				// 3 is long
@@ -463,8 +478,8 @@ class $modify(EditorPause, EditorPauseLayer)
 				newLevelInfo_sprite->addChild(ObjectCountLabel);
 				newLevelInfo_sprite->addChild(LevelLengthLabel);
 
-				newTimeMenu_sprite->addChild(TotalTimeLabel);
-				newTimeMenu_sprite->addChild(SessionTimeLabel);
+				newTimeMenu_sprite->addChild(m_fields->TotalTimeLabel);
+				newTimeMenu_sprite->addChild(m_fields->SessionTimeLabel);
 
 				this->addChild(newTimeMenu_sprite);
 				this->addChild(newLevelInfo_sprite);
@@ -489,6 +504,22 @@ class $modify(EditorPause, EditorPauseLayer)
 		{
 			return false;
 		};
+	};
+
+	void tickTimeLabel(float dt)
+	{
+		log::debug("Scheduler: {}", (float)dt);
+
+		m_fields->timeAdded++;
+
+		auto TotalTime = workingTime(m_editorLayer->m_level->m_workingTime + m_fields->timeAdded);
+		auto SessionTime = workingTime(m_editorLayer->m_level->m_workingTime2 + m_fields->timeAdded);
+
+		log::debug("Total Time: {}, ({})", TotalTime, m_editorLayer->m_level->m_workingTime + m_fields->timeAdded);
+		log::debug("Session Time: {}, ({})", SessionTime, m_editorLayer->m_level->m_workingTime2 + m_fields->timeAdded);
+
+		m_fields->TotalTimeLabel->setCString(fmt::format("In Editor: {}", TotalTime).c_str());
+		m_fields->SessionTimeLabel->setCString(fmt::format("Session: {}", SessionTime).c_str());
 	};
 
 	void onAction(CCObject * sender)
