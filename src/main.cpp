@@ -5,6 +5,7 @@
 #include <Geode/Loader.hpp>
 
 #include <Geode/modify/EditorPauseLayer.hpp>
+#include <Geode/modify/LevelEditorLayer.hpp>
 #include <Geode/modify/DrawGridLayer.hpp>
 #include <Geode/modify/GameObject.hpp>
 #include <Geode/modify/EditorUI.hpp>
@@ -22,6 +23,40 @@ auto getThisLoader = geode::Loader::get();
 
 auto gm = GameManager::get();
 auto winSize = CCDirector::sharedDirector()->getWinSize();
+
+// session time
+int timeAdded = 0;
+
+// time labels
+CCLabelBMFont *SessionTimeLabel = nullptr;
+CCLabelBMFont *TotalTimeLabel = nullptr;
+
+// stolen, er, borrowed from BetterInfo (https://github.com/Cvolton/betterinfo-geode/blob/master/src/utils/TimeUtils.cpp)
+// i also stole this from DiscordRPC
+std::string workingTime(int value)
+{
+	if (value < 0)
+		return fmt::format("NA ({})", value);
+
+	if (value == 0)
+		return "NA";
+
+	int hours = value / 3600;
+	int minutes = (value % 3600) / 60;
+	int seconds = value % 60;
+
+	std::ostringstream stream;
+
+	if (hours > 0)
+		stream << hours << "h ";
+
+	if (minutes > 0)
+		stream << minutes << "m ";
+
+	stream << seconds << "s";
+
+	return stream.str();
+};
 
 class $modify(DrawGridLayer)
 {
@@ -44,30 +79,54 @@ class $modify(DrawGridLayer)
 // 	};
 // };
 
-// stolen, er, borrowed from BetterInfo (https://github.com/Cvolton/betterinfo-geode/blob/master/src/utils/TimeUtils.cpp)
-// i also stole this from DiscordRPC
-std::string workingTime(int value)
+class $modify(LevelEditor, LevelEditorLayer)
 {
-	if (value < 0)
-		return fmt::format("NA ({})", value);
+	bool init(GJGameLevel * p0, bool p1)
+	{
+		if (LevelEditorLayer::init(p0, p1))
+		{
+			if (getThisMod->getSettingValue<bool>("move-info"))
+			{
+				log::debug("Scheduling session timer function...");
+				this->schedule(schedule_selector(LevelEditor::tickTimeLabel), 1.f, kCCRepeatForever, 1.f);
+			};
 
-	if (value == 0)
-		return "NA";
+			return true;
+		}
+		else
+		{
+			return false;
+		};
+	};
 
-	int hours = value / 3600;
-	int minutes = (value % 3600) / 60;
-	int seconds = value % 60;
+	void onExit()
+	{
+		if (getThisMod->getSettingValue<bool>("move-info"))
+		{
+			this->unschedule(schedule_selector(LevelEditor::tickTimeLabel));
+		};
 
-	std::ostringstream stream;
-	if (hours > 0)
-		stream << hours << "h ";
+		LevelEditorLayer::onExit();
+	};
 
-	if (minutes > 0)
-		stream << minutes << "m ";
+	void tickTimeLabel(float dt)
+	{
+		log::debug("Scheduler: {}", (float)dt);
 
-	stream << seconds << "s";
+		timeAdded++;
 
-	return stream.str();
+		auto TotalTime = workingTime(m_level->m_workingTime + timeAdded);
+		auto SessionTime = workingTime(m_level->m_workingTime2 + timeAdded);
+
+		log::debug("Total Time: {}, ({})", TotalTime, m_level->m_workingTime + timeAdded);
+		log::debug("Session Time: {}, ({})", SessionTime, m_level->m_workingTime2 + timeAdded);
+
+		if (LevelEditorLayer::getChildByID("EditorPauseLayer") && (TotalTimeLabel && SessionTimeLabel))
+		{
+			TotalTimeLabel->setCString(fmt::format("In Editor: {}", TotalTime).c_str());
+			SessionTimeLabel->setCString(fmt::format("Session: {}", SessionTime).c_str());
+		};
+	};
 };
 
 class $modify(EditorPause, EditorPauseLayer)
@@ -80,14 +139,6 @@ class $modify(EditorPause, EditorPauseLayer)
 		{
 			return reinterpret_cast<EditorPauseLayer *>(&m_alloc);
 		};
-	};
-
-	struct Fields
-	{
-		CCLabelBMFont *SessionTimeLabel = nullptr;
-		CCLabelBMFont *TotalTimeLabel = nullptr;
-
-		int timeAdded = 0;
 	};
 
 	bool init(LevelEditorLayer * p0)
@@ -430,27 +481,25 @@ class $modify(EditorPause, EditorPauseLayer)
 
 				// TIME TAB //////////////////////////////////////////////////////////////////////////////////////
 
-				auto TotalTime = workingTime(m_editorLayer->m_level->m_workingTime + m_fields->timeAdded);
-				auto SessionTime = workingTime(m_editorLayer->m_level->m_workingTime2 + m_fields->timeAdded);
+				auto TotalTime = workingTime(m_editorLayer->m_level->m_workingTime + timeAdded);
+				auto SessionTime = workingTime(m_editorLayer->m_level->m_workingTime2 + timeAdded);
 
-				log::debug("Total Time: {}, ({})", TotalTime, m_editorLayer->m_level->m_workingTime + m_fields->timeAdded);
-				log::debug("Session Time: {}, ({})", SessionTime, m_editorLayer->m_level->m_workingTime2 + m_fields->timeAdded);
+				log::debug("Total Time: {}, ({})", TotalTime, m_editorLayer->m_level->m_workingTime + timeAdded);
+				log::debug("Session Time: {}, ({})", SessionTime, m_editorLayer->m_level->m_workingTime2 + timeAdded);
 
 				// workingTime is the total time spent in the editor (idk how to convert this to a readable format)
-				m_fields->TotalTimeLabel = CCLabelBMFont::create(fmt::format("In Editor: {}", TotalTime).c_str(), "bigFont.fnt");
-				m_fields->TotalTimeLabel->setScale(0.5);
-				m_fields->TotalTimeLabel->setPosition({newTimeMenu_sprite->getContentWidth() / 2, 35.f});
-				m_fields->TotalTimeLabel->ignoreAnchorPointForPosition(false);
-				m_fields->TotalTimeLabel->setZOrder(1);
+				TotalTimeLabel = CCLabelBMFont::create(fmt::format("In Editor: {}", TotalTime).c_str(), "bigFont.fnt");
+				TotalTimeLabel->setScale(0.5);
+				TotalTimeLabel->setPosition({newTimeMenu_sprite->getContentWidth() / 2, 35.f});
+				TotalTimeLabel->ignoreAnchorPointForPosition(false);
+				TotalTimeLabel->setZOrder(1);
 
 				// workingTime2 is time currently spent in the session (same thing, pls fix)
-				m_fields->SessionTimeLabel = CCLabelBMFont::create(fmt::format("Session: {}", SessionTime).c_str(), "bigFont.fnt");
-				m_fields->SessionTimeLabel->setScale(0.5);
-				m_fields->SessionTimeLabel->setPosition({newTimeMenu_sprite->getContentWidth() / 2, 15.f});
-				m_fields->SessionTimeLabel->ignoreAnchorPointForPosition(false);
-				m_fields->SessionTimeLabel->setZOrder(1);
-
-				this->schedule(schedule_selector(EditorPause::tickTimeLabel), 1.f, kCCRepeatForever, 1.f);
+				SessionTimeLabel = CCLabelBMFont::create(fmt::format("Session: {}", SessionTime).c_str(), "bigFont.fnt");
+				SessionTimeLabel->setScale(0.5);
+				SessionTimeLabel->setPosition({newTimeMenu_sprite->getContentWidth() / 2, 15.f});
+				SessionTimeLabel->ignoreAnchorPointForPosition(false);
+				SessionTimeLabel->setZOrder(1);
 
 				// LEVEL INFO TAB //////////////////////////////////////////////////////////////////////////////////////
 
@@ -478,8 +527,8 @@ class $modify(EditorPause, EditorPauseLayer)
 				newLevelInfo_sprite->addChild(ObjectCountLabel);
 				newLevelInfo_sprite->addChild(LevelLengthLabel);
 
-				newTimeMenu_sprite->addChild(m_fields->TotalTimeLabel);
-				newTimeMenu_sprite->addChild(m_fields->SessionTimeLabel);
+				newTimeMenu_sprite->addChild(TotalTimeLabel);
+				newTimeMenu_sprite->addChild(SessionTimeLabel);
 
 				this->addChild(newTimeMenu_sprite);
 				this->addChild(newLevelInfo_sprite);
@@ -504,22 +553,6 @@ class $modify(EditorPause, EditorPauseLayer)
 		{
 			return false;
 		};
-	};
-
-	void tickTimeLabel(float dt)
-	{
-		log::debug("Scheduler: {}", (float)dt);
-
-		m_fields->timeAdded++;
-
-		auto TotalTime = workingTime(m_editorLayer->m_level->m_workingTime + m_fields->timeAdded);
-		auto SessionTime = workingTime(m_editorLayer->m_level->m_workingTime2 + m_fields->timeAdded);
-
-		log::debug("Total Time: {}, ({})", TotalTime, m_editorLayer->m_level->m_workingTime + m_fields->timeAdded);
-		log::debug("Session Time: {}, ({})", SessionTime, m_editorLayer->m_level->m_workingTime2 + m_fields->timeAdded);
-
-		m_fields->TotalTimeLabel->setCString(fmt::format("In Editor: {}", TotalTime).c_str());
-		m_fields->SessionTimeLabel->setCString(fmt::format("Session: {}", SessionTime).c_str());
 	};
 
 	void onAction(CCObject * sender)
