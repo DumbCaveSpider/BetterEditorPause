@@ -298,7 +298,7 @@ class $modify(EditorPause, EditorPauseLayer)
 				newResumeMenu->setPosition({this->getContentWidth() / 2.f, 180.f});
 
 				// move guidelines menu
-				guidelinesMenu->setPosition({this->getContentWidth() / 2.f, 70.f});
+				guidelinesMenu->setPosition({this->getContentWidth() / 2.f, 75.f});
 				guidelinesMenu->setScale(0.8);
 
 
@@ -417,45 +417,51 @@ class $modify(EditorPause, EditorPauseLayer)
 
 				// TIME TAB //////////////////////////////////////////////////////////////////////////////////////
 
-				auto TotalTime = workingTime(m_editorLayer->m_level->m_workingTime).c_str();
-				auto SessionTime = workingTime(m_editorLayer->m_level->m_workingTime2).c_str();
+				auto TotalTime = workingTime(m_editorLayer->m_level->m_workingTime);
+				auto SessionTime = workingTime(m_editorLayer->m_level->m_workingTime2);
 
 				log::debug("Total Time: {}", TotalTime);
 				log::debug("Session Time: {}", SessionTime);
 
-				// level name (dont add this, just testing if it fetch the level name directly through the m_editorLayer), it works!
-				auto LevelName = CCLabelBMFont::create(CCString::createWithFormat("%s", m_editorLayer->m_level->m_levelName)->getCString(), "goldFont.fnt");
-				LevelName->setScale(0.3);
-				LevelName->setPosition({newTimeMenu_sprite->getContentWidth() / 2, 65.f});
-				LevelName->ignoreAnchorPointForPosition(false);
-				LevelName->setZOrder(1);
-
 				// workingTime is the total time spent in the editor (idk how to convert this to a readable format)
-				auto TotalTimeLabel = CCLabelBMFont::create(CCString::createWithFormat("In Editor: %i", TotalTime)->getCString(), "bigFont.fnt");
+				auto TotalTimeLabel = CCLabelBMFont::create(CCString::createWithFormat("In Editor: %s", TotalTime)->getCString(), "bigFont.fnt");
 				TotalTimeLabel->setScale(0.5);
 				TotalTimeLabel->setPosition({newTimeMenu_sprite->getContentWidth() / 2, 35.f});
 				TotalTimeLabel->ignoreAnchorPointForPosition(false);
 				TotalTimeLabel->setZOrder(1);
 
 				// workingTime2 is time currently spent in the session (same thing, pls fix)
-				auto SessionTimeLabel = CCLabelBMFont::create(CCString::createWithFormat("In Session: %i", SessionTime)->getCString(), "bigFont.fnt");
+				auto SessionTimeLabel = CCLabelBMFont::create(CCString::createWithFormat("In Session: %s", SessionTime)->getCString(), "bigFont.fnt");
 				SessionTimeLabel->setScale(0.5);
 				SessionTimeLabel->setPosition({newTimeMenu_sprite->getContentWidth() / 2, 15.f});
 				SessionTimeLabel->ignoreAnchorPointForPosition(false);
 				SessionTimeLabel->setZOrder(1);
 
-
-
 				// LEVEL INFO TAB //////////////////////////////////////////////////////////////////////////////////////
 
-				auto ObjectCount = CCLabelBMFont::create(CCString::createWithFormat("Objects\n%i", m_editorLayer->m_objectCount.value())->getCString(), "bigFont.fnt"); // what object count? am i stupid?
-				ObjectCount->setScale(0.4);
-				ObjectCount->setPosition({newLevelInfo_sprite->getContentWidth() / 2, 80.f});
-				ObjectCount->ignoreAnchorPointForPosition(false);
-				ObjectCount->setAlignment(CCTextAlignment::kCCTextAlignmentCenter);
-				ObjectCount->setZOrder(1);
+				int LevelLength = m_editorLayer->m_level->m_levelLength; 
+				// 0 is tiny 
+				// 1 is short
+				// 2 is medium
+				// 3 is long
+				// 4 is XL
 
-				newLevelInfo_sprite->addChild(ObjectCount);
+				auto ObjectCountLabel = CCLabelBMFont::create(CCString::createWithFormat("Objects\n%i", m_editorLayer->m_objectCount.value())->getCString(), "bigFont.fnt"); // what object count? am i stupid?
+				ObjectCountLabel->setScale(0.4);
+				ObjectCountLabel->setPosition({newLevelInfo_sprite->getContentWidth() / 2, 80.f});
+				ObjectCountLabel->ignoreAnchorPointForPosition(false);
+				ObjectCountLabel->setAlignment(CCTextAlignment::kCCTextAlignmentCenter);
+				ObjectCountLabel->setZOrder(1);
+
+				auto LevelLengthLabel = CCLabelBMFont::create(CCString::createWithFormat("Length\n%i", LevelLength)->getCString(), "bigFont.fnt");
+				LevelLengthLabel->setScale(0.4);
+				LevelLengthLabel->setPosition({newLevelInfo_sprite->getContentWidth() / 2 + 70.f, 80.f});
+				LevelLengthLabel->ignoreAnchorPointForPosition(false);
+				LevelLengthLabel->setAlignment(CCTextAlignment::kCCTextAlignmentCenter);
+				LevelLengthLabel->setZOrder(1);
+
+				newLevelInfo_sprite->addChild(ObjectCountLabel);
+				newLevelInfo_sprite->addChild(LevelLengthLabel);
 
 				newTimeMenu_sprite->addChild(TotalTimeLabel);
 				newTimeMenu_sprite->addChild(SessionTimeLabel);
