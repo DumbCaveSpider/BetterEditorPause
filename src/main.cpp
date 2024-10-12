@@ -417,6 +417,12 @@ class $modify(EditorPause, EditorPauseLayer)
 
 				// TIME TAB //////////////////////////////////////////////////////////////////////////////////////
 
+				auto TotalTime = workingTime(m_editorLayer->m_level->m_workingTime).c_str();
+				auto SessionTime = workingTime(m_editorLayer->m_level->m_workingTime2).c_str();
+
+				log::debug("Total Time: {}", TotalTime);
+				log::debug("Session Time: {}", SessionTime);
+
 				// level name (dont add this, just testing if it fetch the level name directly through the m_editorLayer), it works!
 				auto LevelName = CCLabelBMFont::create(CCString::createWithFormat("%s", m_editorLayer->m_level->m_levelName)->getCString(), "goldFont.fnt");
 				LevelName->setScale(0.3);
@@ -424,18 +430,21 @@ class $modify(EditorPause, EditorPauseLayer)
 				LevelName->ignoreAnchorPointForPosition(false);
 				LevelName->setZOrder(1);
 
-				// workingTime2 is the total time spent in the editor (idk how to convert this to a readable format)
-				auto TimeSession = CCLabelBMFont::create(CCString::createWithFormat("In Editor: %i", workingTime(m_editorLayer->m_level->m_workingTime2))->getCString(), "bigFont.fnt");
-				TimeSession->setScale(0.5);
-				TimeSession->setPosition({newTimeMenu_sprite->getContentWidth() / 2, 35.f});
-				TimeSession->ignoreAnchorPointForPosition(false);
-				TimeSession->setZOrder(1);
+				// workingTime is the total time spent in the editor (idk how to convert this to a readable format)
+				auto TotalTimeLabel = CCLabelBMFont::create(CCString::createWithFormat("In Editor: %i", TotalTime)->getCString(), "bigFont.fnt");
+				TotalTimeLabel->setScale(0.5);
+				TotalTimeLabel->setPosition({newTimeMenu_sprite->getContentWidth() / 2, 35.f});
+				TotalTimeLabel->ignoreAnchorPointForPosition(false);
+				TotalTimeLabel->setZOrder(1);
 
-				// workingTime is time currently spent in the editor (same thing, pls fix)
-				auto TimeTotal = CCLabelBMFont::create(CCString::createWithFormat("In Session: %i", workingTime(m_editorLayer->m_level->m_workingTime))->getCString(), "bigFont.fnt");
-				TimeTotal->setScale(0.5);
-				TimeTotal->setPosition({newTimeMenu_sprite->getContentWidth() / 2, 15.f});
-				TimeTotal->ignoreAnchorPointForPosition(false);
+				// workingTime2 is time currently spent in the session (same thing, pls fix)
+				auto SessionTimeLabel = CCLabelBMFont::create(CCString::createWithFormat("In Session: %i", SessionTime)->getCString(), "bigFont.fnt");
+				SessionTimeLabel->setScale(0.5);
+				SessionTimeLabel->setPosition({newTimeMenu_sprite->getContentWidth() / 2, 15.f});
+				SessionTimeLabel->ignoreAnchorPointForPosition(false);
+				SessionTimeLabel->setZOrder(1);
+
+
 
 				// LEVEL INFO TAB //////////////////////////////////////////////////////////////////////////////////////
 
@@ -448,8 +457,8 @@ class $modify(EditorPause, EditorPauseLayer)
 
 				newLevelInfo_sprite->addChild(ObjectCount);
 
-				newTimeMenu_sprite->addChild(TimeSession);
-				newTimeMenu_sprite->addChild(TimeTotal);
+				newTimeMenu_sprite->addChild(TotalTimeLabel);
+				newTimeMenu_sprite->addChild(SessionTimeLabel);
 
 				this->addChild(newTimeMenu_sprite);
 				this->addChild(newLevelInfo_sprite);
