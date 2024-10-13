@@ -13,7 +13,7 @@
 		"ArcticWoof",
 		"Cheeseworks"
 	],
-	"description": "Organizes editor pause menu's tools",
+	"description": "Organizes editor pause menu's tools.",
 	"tags": [
 		"editor",
 		"interface",
@@ -58,17 +58,6 @@
 		"move-info": {
 			"name": "Move Editor Information",
 			"description": "Organize the editor pause menu's information labels.",
-			"type": "bool",
-			"default": true
-		},
-		"functions": {
-			"name": "Functionality",
-			"description": "How the mod functions.",
-			"type": "title"
-		},
-		"confirm-use": {
-			"name": "Confirm Actions",
-			"description": "Add a confirmation popup when using a creator action.",
 			"type": "bool",
 			"default": true
 		}

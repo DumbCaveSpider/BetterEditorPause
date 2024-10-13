@@ -166,9 +166,6 @@ class $modify(EditorPause, EditorPauseLayer)
 			// check if player wants to enable new actions buttons
 			if (getThisMod->getSettingValue<bool>("move-tools"))
 			{
-				actionsMenu->removeMeAndCleanup();
-				smallActionsMenu->removeMeAndCleanup();
-
 				// newActionsMenu menu
 				auto newActionsMenu = CCMenu::create();
 				newActionsMenu->setID("all-actions-menu"_spr);
@@ -214,7 +211,8 @@ class $modify(EditorPause, EditorPauseLayer)
 				ActionTitle->setZOrder(1);
 
 				// All Action Buttons //////////////////////////////////////////////////////////////////////////////////////
-				for (const auto &pair : EditorEnum::actionNode)
+
+				for (const auto &pair : EditorEnum::actionToID)
 				{
 					auto validateName = EditorEnum::actionName[pair.second];
 					auto validateIcon = EditorEnum::actionIcon[pair.second];
@@ -225,30 +223,55 @@ class $modify(EditorPause, EditorPauseLayer)
 					}
 					else
 					{
-						log::debug("Creating action button of ID {}...", pair.second.c_str());
+						CCNode *btn = nullptr;
+						log::debug("Checking availability of action button of ID {}...", pair.second.c_str());
 
-						auto actionButtonSprite = CCSprite::create("GJ_button_04.png");
+						if (actionsMenu->getChildByID(pair.first))
+						{
+							log::debug("Action button of ID {} is available", pair.second.c_str());
+							btn = actionsMenu->getChildByID(pair.first);
+						}
+						else if (smallActionsMenu->getChildByID(pair.first))
+						{
+							log::debug("Small action button of ID {} is available", pair.second.c_str());
+							btn = smallActionsMenu->getChildByID(pair.first);
+						}
+						else
+						{
+							log::error("Button of ID {} is unavailable", pair.second.c_str());
+							btn = nullptr;
+						};
 
-						auto actionSprite = CCSprite::create(validateIcon.c_str());
-						actionSprite->setAnchorPoint({0.5, 0.5});
-						actionSprite->setPosition({actionButtonSprite->getScaledContentWidth() / 2, actionButtonSprite->getScaledContentHeight() / 2});
-						actionSprite->setScale(0.625);
+						if (btn)
+						{
+							log::debug("Creating button of ID {}...", pair.second.c_str());
 
-						actionButtonSprite->addChild(actionSprite);
+							auto actionButtonSprite = CCSprite::create("GJ_button_04.png");
 
-						auto action = CCMenuItemSpriteExtra::create(
-							actionButtonSprite,
-							this,
-							menu_selector(EditorPause::onAction));
-						action->setID(pair.second);
-						action->setZOrder(1);
+							auto actionSprite = CCSprite::create(validateIcon.c_str());
+							actionSprite->setAnchorPoint({0.5, 0.5});
+							actionSprite->setPosition({actionButtonSprite->getScaledContentWidth() / 2, actionButtonSprite->getScaledContentHeight() / 2});
+							actionSprite->setScale(0.625);
 
-						newActionsMenu->addChild(action);
-						newActionsMenu->updateLayout();
+							actionButtonSprite->addChild(actionSprite);
 
-						log::debug("Created action button {}", pair.second.c_str());
+							auto action = as<CCMenuItemSpriteExtra *>(btn);
+							action->setID(pair.second);
+							action->setSprite(actionButtonSprite);
+							action->setPosition({0, 0});
+							action->setContentSize(actionButtonSprite->getScaledContentSize());
+							action->setZOrder(1);
+
+							newActionsMenu->addChild(action);
+							newActionsMenu->updateLayout(true);
+
+							log::debug("Created button {}", pair.second.c_str());
+						};
 					};
 				};
+
+				actionsMenu->removeMeAndCleanup();
+				smallActionsMenu->removeMeAndCleanup();
 
 				newActionsMenu->setContentWidth(newActionsMenu_sprite->getContentWidth());
 				newActionsMenu->setPosition({newActionsMenu_sprite->getContentWidth() / 2, newActionsMenu_sprite->getContentHeight() * 0.475f});
@@ -510,14 +533,14 @@ class $modify(EditorPause, EditorPauseLayer)
 				// 3 is long
 				// 4 is XL
 
-				auto ObjectCountLabel = CCLabelBMFont::create(CCString::createWithFormat("Objects\n%i", m_editorLayer->m_objectCount.value())->getCString(), "bigFont.fnt"); // what object count? am i stupid?
+				auto ObjectCountLabel = CCLabelBMFont::create(fmt::format("Objects\n{}", (int)m_editorLayer->m_objectCount.value()).c_str(), "bigFont.fnt"); // what object count? am i stupid?
 				ObjectCountLabel->setScale(0.4);
 				ObjectCountLabel->setPosition({newLevelInfo_sprite->getContentWidth() / 2, 80.f});
 				ObjectCountLabel->ignoreAnchorPointForPosition(false);
 				ObjectCountLabel->setAlignment(CCTextAlignment::kCCTextAlignmentCenter);
 				ObjectCountLabel->setZOrder(1);
 
-				auto LevelLengthLabel = CCLabelBMFont::create(CCString::createWithFormat("Length\n%i", LevelLength)->getCString(), "bigFont.fnt");
+				auto LevelLengthLabel = CCLabelBMFont::create(fmt::format("Length\n{}", EditorEnum::levelLength[LevelLength]).c_str(), "bigFont.fnt");
 				LevelLengthLabel->setScale(0.4);
 				LevelLengthLabel->setPosition({newLevelInfo_sprite->getContentWidth() / 2 + 70.f, 80.f});
 				LevelLengthLabel->ignoreAnchorPointForPosition(false);
@@ -539,6 +562,7 @@ class $modify(EditorPause, EditorPauseLayer)
 
 			if (isBetterEditLoaded)
 			{
+				log::warn("BetterEdit may interfere with BetterEditorPause's modifications.");
 				auto supportBeButton = this->getChildByIDRecursive("hjfod.betteredit/support-be-btn");
 
 				if (supportBeButton)

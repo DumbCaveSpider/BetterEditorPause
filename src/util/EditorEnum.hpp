@@ -53,12 +53,16 @@ public:
     };
 
     static std::map<Action, std::string> actionNode;
+    static std::map<std::string, std::string> actionToID;
     static std::map<std::string, std::string> actionName;
     static std::map<std::string, std::string> actionIcon;
 
     static std::map<Option, std::string> optionNode;
+    static std::map<std::string, std::string> optionToID;
     static std::map<std::string, std::string> optionName;
     static std::map<std::string, std::string> optionSpriteEnabled;
     static std::map<std::string, std::string> optionSpriteDisabled;
     static std::map<std::string, std::string> optionVar;
+
+    static std::map<int, std::string> levelLength;
 };

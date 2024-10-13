@@ -35,6 +35,27 @@ std::map<EditorEnum::Action, std::string> EditorEnum::actionNode{
     {EditorEnum::Action::NewGroupY, "new-group-y"_spr},
     {EditorEnum::Action::SelectAllRight, "select-all-right"_spr}};
 
+std::map<std::string, std::string> EditorEnum::actionToID{
+    {"build-helper-button", EditorEnum::actionNode[EditorEnum::Action::BuildHelper]},
+    {"copy-color-button", EditorEnum::actionNode[EditorEnum::Action::CopyColorPlus]},
+    {"paste-color-button", EditorEnum::actionNode[EditorEnum::Action::PasteColorPlus]},
+    {"create-extras-button", EditorEnum::actionNode[EditorEnum::Action::CreateExtras]},
+    {"unlock-layers-button", EditorEnum::actionNode[EditorEnum::Action::UnlockLayers]},
+    {"reset-unused-button", EditorEnum::actionNode[EditorEnum::Action::ResetUnused]},
+    {"uncheck-portals-button", EditorEnum::actionNode[EditorEnum::Action::UncheckPortals]},
+
+    {"keys-button", EditorEnum::actionNode[EditorEnum::Action::Keys]},
+
+    {"hjfod.betteredit/far-from-content-button", EditorEnum::actionNode[EditorEnum::Action::ResetScroll]},
+    {"create-loop-button", EditorEnum::actionNode[EditorEnum::Action::CreateLoop]},
+    {"align-x-button", EditorEnum::actionNode[EditorEnum::Action::AlignX]},
+    {"align-y-button", EditorEnum::actionNode[EditorEnum::Action::AlignY]},
+    {"select-all-button", EditorEnum::actionNode[EditorEnum::Action::SelectAll]},
+    {"select-all-left-button", EditorEnum::actionNode[EditorEnum::Action::SelectAllLeft]},
+    {"select-all-right-button", EditorEnum::actionNode[EditorEnum::Action::SelectAllRight]},
+    {"new-groupx-button", EditorEnum::actionNode[EditorEnum::Action::NewGroupX]},
+    {"new-groupy-button", EditorEnum::actionNode[EditorEnum::Action::NewGroupY]}};
+
 std::map<std::string, std::string> EditorEnum::actionName{
     {EditorEnum::actionNode[EditorEnum::Action::BuildHelper], "Build Helper"},
     {EditorEnum::actionNode[EditorEnum::Action::CopyColorPlus], "Copy Color +"},
@@ -96,6 +117,19 @@ std::map<EditorEnum::Option, std::string> EditorEnum::optionNode{
     {EditorEnum::Option::SelectFilter, "select-filter"_spr},
     {EditorEnum::Option::IgnoreDamage, "ignore-damage"_spr}};
 
+std::map<std::string, std::string> EditorEnum::optionToID{
+    {"show-hitboxes-toggle", EditorEnum::optionNode[EditorEnum::Option::ShowHitboxes]},
+    {"hide-invisible-toggle", EditorEnum::optionNode[EditorEnum::Option::HideInvisible]},
+    {"preview-mode-toggle", EditorEnum::optionNode[EditorEnum::Option::PreviewMode]},
+    {"preview-animations-toggle", EditorEnum::optionNode[EditorEnum::Option::PreviewAnimations]},
+    {"preview-particles-toggle", EditorEnum::optionNode[EditorEnum::Option::PreviewParticles]},
+    {"preview-shaders-toggle", EditorEnum::optionNode[EditorEnum::Option::PreviewShaders]},
+    {"show-ground-toggle", EditorEnum::optionNode[EditorEnum::Option::ShowGround]},
+    {"show-object-info-toggle", EditorEnum::optionNode[EditorEnum::Option::ShowObjectInfo]},
+    {"show-grid-toggle", EditorEnum::optionNode[EditorEnum::Option::ShowGrid]},
+    {"select-filter-toggle", EditorEnum::optionNode[EditorEnum::Option::SelectFilter]},
+    {"ignore-damage-toggle", EditorEnum::optionNode[EditorEnum::Option::IgnoreDamage]}};
+
 std::map<std::string, std::string> EditorEnum::optionName{
     {EditorEnum::optionNode[EditorEnum::Option::ShowHitboxes], "Show Hitboxes"},
     {EditorEnum::optionNode[EditorEnum::Option::HideInvisible], "Hide Invisible"},
@@ -147,3 +181,10 @@ std::map<std::string, std::string> EditorEnum::optionVar{
     {EditorEnum::optionNode[EditorEnum::Option::ShowGrid], "0038"},
     {EditorEnum::optionNode[EditorEnum::Option::SelectFilter], "0064"},
     {EditorEnum::optionNode[EditorEnum::Option::IgnoreDamage], "0009"}};
+
+std::map<int, std::string> EditorEnum::levelLength{
+    {0, "Tiny"},
+    {1, "Short"},
+    {2, "Medium"},
+    {3, "Long"},
+    {4, "XL"}};
