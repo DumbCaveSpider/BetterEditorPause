@@ -270,16 +270,29 @@ class $modify(EditorPause, EditorPauseLayer)
 					};
 				};
 
-				actionsMenu->removeMeAndCleanup();
-				smallActionsMenu->removeMeAndCleanup();
+				auto settingsSprite = CCSprite::createWithSpriteFrameName("GJ_optionsBtn_001.png");
+				settingsSprite->setScale(0.8);
+				settingsSprite->updateTransform();
+
+				auto settings = as<CCMenuItemSpriteExtra *>(settingsMenu->getChildByID("settings-button"));
+				settings->setSprite(settingsSprite);
+
+				guidelinesMenu->addChild(settings);
 
 				newActionsMenu->setContentWidth(newActionsMenu_sprite->getContentWidth());
 				newActionsMenu->setPosition({newActionsMenu_sprite->getContentWidth() / 2, newActionsMenu_sprite->getContentHeight() * 0.475f});
 				newActionsMenu->setScale(0.825);
-				newActionsMenu->updateLayout(true);
 
 				newActionsMenu_sprite->addChild(ActionTitle);
 				newActionsMenu_sprite->addChild(newActionsMenu);
+
+				newActionsMenu->updateLayout(true);
+				guidelinesMenu->updateLayout(true);
+
+				actionsMenu->removeMeAndCleanup();
+				smallActionsMenu->removeMeAndCleanup();
+				settingsMenu->removeMeAndCleanup();
+
 				this->addChild(newActionsMenu_sprite);
 			};
 
@@ -287,7 +300,6 @@ class $modify(EditorPause, EditorPauseLayer)
 			if (getThisMod->getSettingValue<bool>("move-toggles"))
 			{
 				togglesMenu->removeMeAndCleanup();
-				settingsMenu->removeMeAndCleanup();
 
 				// newTogglesMenu menu
 				auto newTogglesMenu = CCMenu::create();
@@ -366,10 +378,12 @@ class $modify(EditorPause, EditorPauseLayer)
 				newTogglesMenu->setContentWidth(newTogglesMenu_sprite->getContentWidth());
 				newTogglesMenu->setPosition({newTogglesMenu_sprite->getContentWidth() / 2, newTogglesMenu_sprite->getContentHeight() * 0.475f});
 				newTogglesMenu->setScale(0.8);
+
 				newTogglesMenu->updateLayout(true);
 
 				newTogglesMenu_sprite->addChild(OptionTitle);
 				newTogglesMenu_sprite->addChild(newTogglesMenu);
+
 				this->addChild(newTogglesMenu_sprite);
 			};
 
@@ -468,6 +482,8 @@ class $modify(EditorPause, EditorPauseLayer)
 				newResumeMenu->addChild(Save_Button);
 				newResumeMenu->addChild(exitWithoutSave_Button);
 
+				guidelinesMenu->updateLayout();
+
 				this->addChild(newResumeMenu);
 			};
 
@@ -527,13 +543,8 @@ class $modify(EditorPause, EditorPauseLayer)
 				// LEVEL INFO TAB //////////////////////////////////////////////////////////////////////////////////////
 
 				int LevelLength = m_editorLayer->m_level->m_levelLength;
-				// 0 is tiny
-				// 1 is short
-				// 2 is medium
-				// 3 is long
-				// 4 is XL
 
-				auto ObjectCountLabel = CCLabelBMFont::create(fmt::format("Objects\n{}", (int)m_editorLayer->m_objectCount.value()).c_str(), "bigFont.fnt"); // what object count? am i stupid?
+				auto ObjectCountLabel = CCLabelBMFont::create(fmt::format("Objects\n{}", (int)m_editorLayer->m_objectCount.value()).c_str(), "bigFont.fnt"); // what object count? am i stupid? // :3
 				ObjectCountLabel->setScale(0.4);
 				ObjectCountLabel->setPosition({newLevelInfo_sprite->getContentWidth() / 2, 80.f});
 				ObjectCountLabel->ignoreAnchorPointForPosition(false);
@@ -579,45 +590,6 @@ class $modify(EditorPause, EditorPauseLayer)
 		};
 	};
 
-	void onAction(CCObject * sender)
-	{
-		CCNode *nodeObject = as<CCNode *>(sender);
-		auto nodeID = nodeObject->getID();
-
-		log::debug("Processing editor action of ID {}...", nodeID.c_str());
-
-		auto validation = EditorEnum::actionName[nodeID];
-
-		if (validation.empty())
-		{
-			log::error("Editor action '{}' invalid", nodeID.c_str());
-		}
-		else
-		{
-			log::debug("Editor action {} valid", nodeID.c_str());
-
-			if (getThisMod->getSettingValue<bool>("confirm-use"))
-			{
-				geode::createQuickPopup(
-					validation.c_str(),
-					fmt::format("Would you like to use <cy>{}</c>?", validation.c_str()),
-					"Cancel", "Yes",
-					[this, sender, nodeID](auto, bool btn2)
-					{
-						if (btn2)
-						{
-							log::debug("Initiating editor action with ID {}", nodeID.c_str());
-							EditorPause::initiateAction(nodeID, sender);
-						};
-					});
-			}
-			else
-			{
-				EditorPause::initiateAction(nodeID, sender);
-			};
-		};
-	};
-
 	void onOption(CCObject * sender)
 	{
 		CCNode *nodeObject = as<CCNode *>(sender);
@@ -636,93 +608,6 @@ class $modify(EditorPause, EditorPauseLayer)
 			log::debug("Editor option {} valid", nodeID.c_str());
 
 			EditorPause::initiateOption(nodeID, sender);
-		};
-	};
-
-	void initiateAction(std::string actionID, CCObject * sender)
-	{
-		auto validate = EditorEnum::actionName[actionID];
-
-		if (validate.empty())
-		{
-			log::error("Cannot initiate editor action of invalid ID '{}'", actionID);
-		}
-		else
-		{
-			log::debug("Initiating editor action of ID {}...", actionID);
-
-			if (actionID == EditorEnum::actionNode[EditorEnum::Action::BuildHelper])
-			{
-				this->onBuildHelper(sender);
-			}
-			// else if (actionID == EditorEnum::actionNode[EditorEnum::Action::CopyColorPlus])
-			//{
-			//	this->onCopyWColor(sender);
-			// }
-			// else if (actionID == EditorEnum::actionNode[EditorEnum::Action::PasteColorPlus])
-			//{
-			//	this->onPasteWColor(sender);
-			// }
-			else if (actionID == EditorEnum::actionNode[EditorEnum::Action::CreateExtras])
-			{
-				this->onCreateExtras(sender);
-			}
-			// else if (actionID == EditorEnum::actionNode[EditorEnum::Action::UnlockLayers])
-			//{
-			//	this->onUnlockAllLayers(sender);
-			// }
-			// else if (actionID == EditorEnum::actionNode[EditorEnum::Action::1Unused])
-			//{
-			//	this->doResetUnused(sender);
-			// }
-			// else if (actionID == EditorEnum::actionNode[EditorEnum::Action::CreateLoop])
-			//{
-			//	this->onCreateLoop(sender);
-			// }
-			// else if (actionID == EditorEnum::actionNode[EditorEnum::Action::UncheckPortals])
-			//{
-			//	this->uncheckAllPortals(sender);
-			// }
-			// else if (actionID == EditorEnum::actionNode[EditorEnum::Action::Keys])
-			//{
-			//	this->onKeybindings(sender);
-			// }
-			// else if (actionID == EditorEnum::actionNode[EditorEnum::Action::Regroup])
-			//{
-			//	this->onReGroup(sender);
-			// }
-			// else if (actionID == EditorEnum::actionNode[EditorEnum::Action::ResetScroll])
-			//{
-			//	this->onResetScroll(sender);
-			// }
-			else if (actionID == EditorEnum::actionNode[EditorEnum::Action::SelectAll])
-			{
-				this->onSelectAll(sender);
-			}
-			else if (actionID == EditorEnum::actionNode[EditorEnum::Action::AlignX])
-			{
-				this->onAlignX(sender);
-			}
-			// else if (actionID == EditorEnum::actionNode[EditorEnum::Action::NewGroupX])
-			//{
-			//	this->onNewGroupX(sender);
-			// }
-			else if (actionID == EditorEnum::actionNode[EditorEnum::Action::SelectAllLeft])
-			{
-				this->onSelectAllLeft(sender);
-			}
-			else if (actionID == EditorEnum::actionNode[EditorEnum::Action::AlignY])
-			{
-				this->onAlignY(sender);
-			}
-			// else if (actionID == EditorEnum::actionNode[EditorEnum::Action::NewGroupY])
-			//{
-			//	this->onNewGroupY(sender);
-			// }
-			else if (actionID == EditorEnum::actionNode[EditorEnum::Action::SelectAllRight])
-			{
-				this->onSelectAllRight(sender);
-			};
 		};
 	};
 
@@ -792,6 +677,6 @@ class $modify(EditorPause, EditorPauseLayer)
 
 	void onNewToggles(CCObject * sender)
 	{
-		Notification::create("Button yes", NotificationIcon::Success, 2.f)->show();
+		Notification::create("Test successful", NotificationIcon::Success, 2.f)->show();
 	};
 };
