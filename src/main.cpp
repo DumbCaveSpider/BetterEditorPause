@@ -6,15 +6,11 @@
 
 #include <Geode/modify/EditorPauseLayer.hpp>
 #include <Geode/modify/LevelEditorLayer.hpp>
-#include <Geode/modify/DrawGridLayer.hpp>
 #include <Geode/modify/GameObject.hpp>
-#include <Geode/modify/EditorUI.hpp>
 
 #include <Geode/binding/EditorPauseLayer.hpp>
 #include <Geode/binding/LevelEditorLayer.hpp>
-#include <Geode/binding/DrawGridLayer.hpp>
 #include <Geode/binding/GameManager.hpp>
-#include <Geode/binding/EditorUI.hpp>
 
 using namespace geode::prelude;
 
@@ -57,27 +53,6 @@ std::string workingTime(int value)
 
 	return stream.str();
 };
-
-class $modify(DrawGridLayer)
-{
-	$override void draw()
-	{
-		bool origBool = m_editorLayer->m_previewMode;
-		DrawGridLayer::draw();
-		m_editorLayer->m_previewMode = origBool;
-	};
-};
-
-// class $modify(EditorUI)
-// {
-// 	$override void selectObject(GameObject * obj, bool filter)
-// 	{
-// 		if (!static_cast<GameObject *>(obj)->shouldHide())
-// 		{
-// 			EditorUI::selectObject(obj, filter);
-// 		};
-// 	};
-// };
 
 class $modify(LevelEditor, LevelEditorLayer)
 {
@@ -406,7 +381,6 @@ class $modify(EditorPause, EditorPauseLayer)
 				// RESUME BUTTON //////////////////////////////////////////////////////////////////////////////////////
 
 				// Resume Button
-
 				auto resume_Sprite = CCSprite::create("r_resumeToEditor.png"_spr);
 				resume_Sprite->setScale(0.8);
 
@@ -420,7 +394,6 @@ class $modify(EditorPause, EditorPauseLayer)
 				resume_Button->ignoreAnchorPointForPosition(false);
 
 				// saveAndPlay Button
-
 				auto saveAndPlay_Sprite = CCSprite::create("r_saveAndPlay.png"_spr);
 				saveAndPlay_Sprite->setScale(0.8);
 
@@ -434,7 +407,6 @@ class $modify(EditorPause, EditorPauseLayer)
 				saveAndPlay_Button->ignoreAnchorPointForPosition(false);
 
 				// saveAndExit Button
-
 				auto saveAndExit_Sprite = CCSprite::create("r_saveAndExit.png"_spr);
 				saveAndExit_Sprite->setScale(0.8);
 
@@ -448,7 +420,6 @@ class $modify(EditorPause, EditorPauseLayer)
 				saveAndExit_Button->ignoreAnchorPointForPosition(false);
 
 				// Save Button
-
 				auto Save_Sprite = CCSprite::create("r_saveLevel.png"_spr);
 				Save_Sprite->setScale(0.8);
 
@@ -462,7 +433,6 @@ class $modify(EditorPause, EditorPauseLayer)
 				Save_Button->ignoreAnchorPointForPosition(false);
 
 				// Exit Without Save Button
-
 				auto exitWithoutSave_Sprite = CCSprite::create("r_exitWithoutSave.png"_spr);
 				exitWithoutSave_Sprite->setScale(0.8);
 

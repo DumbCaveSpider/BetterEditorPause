@@ -65,11 +65,10 @@
 	"links": {
 		"community": "https://www.discord.com/invite/2jPCtJhHNp",
 		"homepage": "https://www.arcticwoof.com.au/",
-		"source": "https://github.com/DumbCaveSpider/BetterEditorPause/"
+		"source": "https://www.github.com/DumbCaveSpider/BetterEditorPause/"
 	},
-	"api": {
-		"include": [
-			"src/util/*.hpp"
-		]
+	"issues": {
+		"info": "Report issues at the mod's repository.",
+		"url": "https://www.github.com/DumbCaveSpider/BetterEditorPause/issues/"
 	}
 }
