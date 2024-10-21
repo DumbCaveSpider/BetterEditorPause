@@ -598,7 +598,7 @@ class $modify(EditorPause, EditorPauseLayer)
 
 			if (optionID == EditorEnum::optionNode[EditorEnum::Option::PreviewMode])
 			{
-				log::debug("Unknown protocol for action {}", optionID);
+				log::warn("Unknown protocol for action {}", optionID);
 			}
 			else if (optionID == EditorEnum::optionNode[EditorEnum::Option::PreviewAnimations])
 			{
@@ -606,11 +606,11 @@ class $modify(EditorPause, EditorPauseLayer)
 			}
 			else if (optionID == EditorEnum::optionNode[EditorEnum::Option::PreviewParticles])
 			{
-				m_editorLayer->updatePreviewParticles();
+				log::warn("Unknown protocol for action {}", optionID);
 			}
 			else if (optionID == EditorEnum::optionNode[EditorEnum::Option::PreviewShaders])
 			{
-				EditorPause::onNewToggles(sender);
+				log::warn("Unknown protocol for action {}", optionID);
 			}
 			else if (optionID == EditorEnum::optionNode[EditorEnum::Option::ShowHitboxes])
 			{
@@ -630,7 +630,7 @@ class $modify(EditorPause, EditorPauseLayer)
 			}
 			else if (optionID == EditorEnum::optionNode[EditorEnum::Option::ShowGrid])
 			{
-				log::debug("Unknown protocol for action {}", optionID);
+				log::warn("Unknown protocol for action {}", optionID);
 			}
 			else if (optionID == EditorEnum::optionNode[EditorEnum::Option::SelectFilter])
 			{
